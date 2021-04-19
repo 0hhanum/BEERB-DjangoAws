@@ -23,3 +23,15 @@ class Review(core_models.TimeStampedModel):
 
         return f"{self.review} - {self.room}"
         # ForeignKey 를 사용했기 때문에 연결된 model 속 field 도 찾을 수 있음!
+
+    def rating_average(self):  # Custom Model Function
+        avg = (
+            self.accuracy
+            + self.communication
+            + self.location
+            + self.check_in
+            + self.value
+        ) / 5
+        return round(avg, 2)
+
+    rating_average.short_description = "Average"  # 패널에 추가했을때 column 명.

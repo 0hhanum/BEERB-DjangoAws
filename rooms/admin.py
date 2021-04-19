@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import mark_safe
 from . import models
 
 # Register your models here.
@@ -15,15 +16,32 @@ class ItemAdmin(admin.ModelAdmin):
         return obj.rooms.count()
 
 
+class PhotoInline(admin.TabularInline):  # Admin 안에 Admin 을 만들어주는 inline admin
+
+    model = models.Photo
+
+
 @admin.register(models.Room)
 class RoomAdmin(admin.ModelAdmin):
 
     """ Room Admin Definition """
 
+    inlines = (PhotoInline,)
+
     fieldsets = (
         (
             "Basic Info",
-            {"fields": ("host", "name", "description", "country", "address", "price")},
+            {
+                "fields": (
+                    "host",
+                    "name",
+                    "description",
+                    "country",
+                    "city",
+                    "address",
+                    "price",
+                )
+            },
         ),
         ("Times", {"fields": ("check_in", "check_out", "instant_book")}),
         (
@@ -65,6 +83,7 @@ class RoomAdmin(admin.ModelAdmin):
         "instant_book",
         "count_amenities",  # admin function (아래)
         "count_photos",
+        "total_rating",
     )
 
     # ordering = ("price",)  # 패널이 로딩되면 바로 무엇을 기준으로 sort 할 것인지 선택.
@@ -80,6 +99,7 @@ class RoomAdmin(admin.ModelAdmin):
         "country",
     )
 
+    raw_id_fields = ("host",)  # user 엄청 많아지게 되면 스크롤로 찾는 거 효율 떨어짐. foreingKey 찾는 방법.
     search_fields = ("city", "host__username")
     # admin 패널 Room 에서 city 명으로 검색하는 seacrh bar 생성.
 
@@ -105,4 +125,12 @@ class PhotoAdmin(admin.ModelAdmin):
 
     """ Photo Admin Definition """
 
-    pass
+    list_display = ("__str__", "get_thumbnail")
+
+    def get_thumbnail(self, obj):
+        return mark_safe(
+            f'<img width="40px" style="border-radius: 7px" height=40px src="{obj.file.url}"/>'
+        )
+        # mark safe = selenium execute_script 같은거.
+
+    get_thumbnail.short_description = "Thumbnail"

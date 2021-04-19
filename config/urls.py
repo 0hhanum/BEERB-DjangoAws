@@ -15,7 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
+
+# settings.py 를 직접 import 하는 게 아니라 장고 시스템에서 conf 에 clone 된 settings 를 import.
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
 ]
+
+if settings.DEBUG:  # DEBUG 가 켜져있을 때 (developing 일 때)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# MEDIA_URL 로 접근했을 때 어느 경로를 참조할 것인지

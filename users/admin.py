@@ -1,10 +1,15 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from . import models
+from rooms import models as room_models
 
 # Register your models here.
 
 # admin.site.register(models.User, CustomUserAdmin)  이렇게 할 수도 있음
+
+
+class RoomInline(admin.TabularInline):  # Admin 안에 Admin 을 만들어주는 inline admin
+    model = room_models.Room
 
 
 @admin.register(models.User)
@@ -14,18 +19,7 @@ class CustomUserAdmin(UserAdmin):
 
     """ Custom User Admin """
 
-    # list_display = (
-    #     "username",
-    #     "gender",
-    #     "language",
-    #     "currency",
-    #     "superhost",
-    # )  user list 에서 항목을 보여주는 옵션
-
-    # list_filter = (
-    #     "superhost",
-    #     "language",
-    #  filter 를 만드는 옵션
+    inlines = (RoomInline,)
 
     fieldsets = UserAdmin.fieldsets + (
         (
@@ -43,3 +37,17 @@ class CustomUserAdmin(UserAdmin):
             },
         ),
     )
+
+    list_display = (
+        "username",
+        "first_name",
+        "last_name",
+        "email",
+        "is_active",
+        "language",
+        "currency",
+        "superhost",
+        "is_staff",
+        "is_superuser",
+    )
+    list_filter = UserAdmin.list_filter + ("superhost",)

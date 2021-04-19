@@ -59,7 +59,7 @@ class Photo(core_models.TimeStampedModel):
     """ Photo Model Definition """
 
     caption = models.CharField(max_length=80)
-    file = models.ImageField()
+    file = models.ImageField(upload_to="room-photos")  # media root 안의 어떤 폴더에 저장할 건지 설정.
     room = models.ForeignKey("Room", related_name="photos", on_delete=models.CASCADE)
     # "Room" 처리한 이유는 Room 클래스가 아래에 있기 떄문에 Photo 를 아래로 옮기거나 string 처리해서 읽을 수 있음. 장고의 기능.
 
@@ -98,3 +98,20 @@ class Room(core_models.TimeStampedModel):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.city = str.capitalize(self.city)
+        super().save(*args, **kwargs)
+
+    def total_rating(self):
+        all_reviews = self.reviews.all()
+        # Review 가 room 을 참조할 때 key "reviews" 를 이용한거임. 역참조 관계 생각.
+        if len(all_reviews) != 0:
+            all_ratings = 0
+            for review in all_reviews:
+                all_ratings += review.rating_average()
+
+                return all_ratings / len(all_reviews)
+
+        else:
+            return "No Reviews"

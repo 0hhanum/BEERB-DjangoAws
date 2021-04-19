@@ -9,7 +9,23 @@ class Conversation(core_models.TimeStampedModel):
     )
 
     def __str__(self):
-        return str(self.created)
+        usernames = []
+        for user in self.participants.all():
+            usernames.append(user.username)
+
+        return ", ".join(usernames)  # 리스트를 하나로 묶어서 str 로 만듬. Hacks
+
+    def count_messages(self):
+
+        return self.messages.count()
+
+    def count_participants(self):
+
+        return self.participants.count()
+
+    # count_messages 와 차이가 있음. messages 는 역참조를 이용했지만, participants 는 클래스 변수를 이용함.
+    count_messages.short_description = "Messages"
+    count_participants.short_description = "participants"
 
 
 class Message(core_models.TimeStampedModel):

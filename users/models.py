@@ -31,7 +31,10 @@ class User(AbstractUser):
 
     CURRENCY_CHOICES = ((CURRENCY_KRW, "KRW"), (CURRENCY_USD, "USD"))
 
-    avatar = models.ImageField(blank=True)  # 데이터베이스의 값이 null 이어도 허용
+    avatar = models.ImageField(
+        blank=True, upload_to="avatars"
+    )  # 데이터베이스의 값이 null 이어도 허용
+    # media root 안의 어떤 폴더에 저장할 건지 설정.
     gender = models.CharField(
         choices=GENDER_CHOICES, max_length=10, blank=True
     )  # blank 이용 필수입력항목 해제

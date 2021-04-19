@@ -23,6 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = "t%_hh9z6u%cyjkzftdse87t-e*_$r9y69j6mzdo-)uuev%9=qr"
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# 개발 단계에서 켜두는 것. 에러시 웹에서 에러 페이지를 보여준다. 끄면 404
 DEBUG = True
 
 ALLOWED_HOSTS = []
@@ -134,3 +135,10 @@ USE_TZ = True
 STATIC_URL = "/static/"
 
 AUTH_USER_MODEL = "users.User"
+
+# 미디어 파일 저장 경로를 설정
+MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
+
+MEDIA_URL = "/media/"  # 이건 경로라기 보다는 Url 에 입력되는 키워드에 가까움.
+# media 앞에 / 를 사용하면 절대 경로가 지정된다.
+# urls 에 추가해 줘야함.

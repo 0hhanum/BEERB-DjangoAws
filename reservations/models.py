@@ -1,5 +1,6 @@
 from django.db import models
 from core import models as core_models
+from django.utils import timezone
 
 
 class Reservation(core_models.TimeStampedModel):
@@ -30,3 +31,15 @@ class Reservation(core_models.TimeStampedModel):
 
     def __str__(self):
         return f"{self.room} - {self.check_in}"
+
+    def in_progress(self):
+        now = timezone.now().date()
+        return now > self.check_in and now < self.check_out
+
+    in_progress.boolean = True  # Admin 패널에서 반환값을 기호로(아이콘으로) 바꿔줌.
+
+    def is_finished(self):
+        now = timezone.now().date()
+        return now > self.check_out
+
+    is_finished.boolean = True
