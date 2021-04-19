@@ -34,7 +34,7 @@ class Reservation(core_models.TimeStampedModel):
 
     def in_progress(self):
         now = timezone.now().date()
-        return now > self.check_in and now < self.check_out
+        return now >= self.check_in and now <= self.check_out
 
     in_progress.boolean = True  # Admin 패널에서 반환값을 기호로(아이콘으로) 바꿔줌.
 
