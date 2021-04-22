@@ -54,18 +54,18 @@ class Command(BaseCommand):
                     file=f"/room-photos/{random.randint(1, 31)}.webp",
                 )
 
-        for facility in facilities:
-            magic_number = random.randint(0, 15)
-            if magic_number % 2 == 0:
-                room.facilities.add(facility)  # ManyToMany 에서 추가하는 방법.
-        for rule in rules:
-            magic_number = random.randint(0, 15)
-            if magic_number % 2 == 0:
-                room.house_rules.add(rule)  # ManyToMany 에서 추가하는 방법.
+            for facility in facilities:
+                magic_number = random.randint(0, 15)
+                if magic_number % 2 == 0:
+                    room.facilities.add(facility)  # ManyToMany 에서 추가하는 방법.
+            for rule in rules:
+                magic_number = random.randint(0, 15)
+                if magic_number % 2 == 0:
+                    room.house_rules.add(rule)  # ManyToMany 에서 추가하는 방법.
 
-        for amenity in amenities:
-            magic_number = random.randint(0, 15)
-            if magic_number % 2 == 0:
-                room.amenities.add(amenity)  # ManyToMany 에서 추가하는 방법.
+            for amenity in amenities:
+                magic_number = random.randint(0, 15)
+                if magic_number % 2 == 0:
+                    room.amenities.add(amenity)  # ManyToMany 에서 추가하는 방법.
 
         self.stdout.write(self.style.SUCCESS(f"{number} rooms CREATED"))

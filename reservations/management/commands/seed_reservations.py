@@ -16,20 +16,20 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
 
         parser.add_argument(
-            "--number",
+            "--total",
             type=int,
             default=1,
             help=f"How many {NAME} you want to create?",
         )
 
     def handle(self, *args, **options):
-        number = options.get("number")
+        total = options.get("total")
         seeder = Seed.seeder()
         users = user_models.User.objects.all()
         rooms = room_models.Room.objects.all()
         seeder.add_entity(
             reservation_models.Reservation,
-            number,
+            total,
             {
                 "status": lambda x: random.choice(["pending", "confirmed", "canceled"]),
                 "guest": lambda x: random.choice(users),
@@ -42,4 +42,4 @@ class Command(BaseCommand):
 
         seeder.execute()
 
-        self.stdout.write(self.style.SUCCESS(f"{number} {NAME} created!"))
+        self.stdout.write(self.style.SUCCESS(f"{total} {NAME} created!"))
