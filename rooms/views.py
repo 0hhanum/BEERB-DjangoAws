@@ -1,7 +1,11 @@
 # from django.shortcuts import render, redirect
+
+# from django.urls import reverse
+# from django.http import Http404
+
 # from django.core.paginator import Paginator, EmptyPage
-from django.utils import timezone
-from django.views.generic import ListView
+# from django.utils import timezone
+from django.views.generic import ListView, DetailView
 from . import models
 
 # 수동으로 pagination 만들기
@@ -49,3 +53,26 @@ class HomeView(ListView):  # Class Based View
     paginate_orphans = 5
     ordering = "created"
     context_object_name = "rooms"
+
+
+# Function Based View
+
+# def room_detail(request, pk):
+
+#     try:
+#         room = models.Room.objects.get(pk=pk)
+
+#         return render(request, "rooms/detail.html", context={"room": room})
+
+#     except models.Room.DoesNotExist:
+
+#         # return redirect(reverse("core:home"))  # home 으로 redirect
+#         raise Http404()
+#         # 404 page 를 이용하면 브라우저에게도 아무것도 찾지 못했다는 걸 알려주고 저장하지 않을 수 있다.
+
+
+class RoomDetail(DetailView):
+
+    """ Room Detail Definition """
+
+    model = models.Room

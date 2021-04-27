@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django_countries.fields import CountryField
 from core import models as core_models
 
@@ -95,6 +96,12 @@ class Room(core_models.TimeStampedModel):
     amenities = models.ManyToManyField("Amenity", related_name="rooms", blank=True)
     facilities = models.ManyToManyField("Facility", related_name="rooms", blank=True)
     house_rules = models.ManyToManyField("HouseRule", related_name="rooms", blank=True)
+
+    def get_absolute_url(self):
+
+        return reverse("rooms:detail", kwargs={"pk": self.pk})
+
+    # admin 에서 detail 에 해당하는 url 로 바로 접근 (view on site 이용)
 
     def __str__(self):
         return self.name
