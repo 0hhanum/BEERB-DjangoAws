@@ -101,7 +101,7 @@ class RoomAdmin(admin.ModelAdmin):
 
     raw_id_fields = ("host",)  # user 엄청 많아지게 되면 스크롤로 찾는 거 효율 떨어짐. foreingKey 찾는 방법.
     search_fields = ("city", "host__username")
-    # admin 패널 Room 에서 city 명으로 검색하는 seacrh bar 생성.
+    # admin 패널 Room 에서 city 명으로 검색하는 search bar 생성.
 
     filter_horizontal = (  # ManytoMany Field 에서 수평으로 Filter 사용.
         "amenities",

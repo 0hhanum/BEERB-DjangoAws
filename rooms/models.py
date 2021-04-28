@@ -36,6 +36,7 @@ class Amenity(AbstractItem):
 
     class Meta:
         verbose_name_plural = "Amenities"
+
         # admin 패널에서 자동으로 Amenitys 로 표기되는 걸 커스텀 하기.
 
 
@@ -78,7 +79,7 @@ class Room(core_models.TimeStampedModel):
     city = models.CharField(max_length=80)
     price = models.IntegerField()
     address = models.CharField(max_length=140)
-    guests = models.IntegerField()
+    guests = models.IntegerField(help_text="How many people will staying?")
     beds = models.IntegerField()
     bedrooms = models.IntegerField()
     baths = models.IntegerField()
@@ -92,7 +93,7 @@ class Room(core_models.TimeStampedModel):
     room_type = models.ForeignKey(
         "RoomType", related_name="rooms", on_delete=models.SET_NULL, null=True
     )
-    # many to many 구조를 사용해야할 때는 ManyToMajyField 를 사용한다.
+    # many to many 구조를 사용해야할 때는 ManyToManyField 를 사용한다.
     amenities = models.ManyToManyField("Amenity", related_name="rooms", blank=True)
     facilities = models.ManyToManyField("Facility", related_name="rooms", blank=True)
     house_rules = models.ManyToManyField("HouseRule", related_name="rooms", blank=True)
