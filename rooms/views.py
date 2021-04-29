@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, View
-from django.core.paginator import Paginator
+
+# from django.core.paginator import Paginator
 from . import models, forms
 
 # from django.urls import reverse
@@ -174,11 +175,13 @@ class SearchView(View):
     def get(self, request):
 
         country = request.GET.get("country")
-
+        city = request.GET.get("city")
         if country:
             form = forms.SearchForm(request.GET)
+
             # request.GET 을 통해 변수 form 에 html form 을 통해서 넘어온 정보가 저장됨.
             if form.is_valid():
+
                 country = form.cleaned_data.get("country")
                 city = form.cleaned_data.get("city")
                 room_type = form.cleaned_data.get("room_type")
@@ -194,7 +197,7 @@ class SearchView(View):
 
                 filter_args = {}
 
-                if city != "Anywhere":
+                if city != "Anywhere" and city != "":
                     filter_args["city__startswith"] = city
 
                 filter_args["country"] = country
@@ -223,23 +226,24 @@ class SearchView(View):
                 if superhost is True:
                     filter_args["host__superhost"] = True
 
-                qs = models.Room.objects.filter(**filter_args)
+                rooms = models.Room.objects.filter(**filter_args)
 
                 for amenity in amenities:
-                    qs = qs.filter(amenities=amenity)
+                    rooms = rooms.filter(amenities=amenity)
 
                 for facility in facilities:
-                    qs = qs.filter(facilities=facility).order_by("-created")
+                    rooms = rooms.filter(facilities=facility)
+                print(rooms)
+                print(filter_args)
+                # paginator = Paginator(qs, 10, orphans=5)
 
-                paginator = Paginator(qs, 10, orphans=5)
-
-                page = request.GET.get("page", 1)
-                rooms = paginator.get_page(page)
+                # page = request.GET.get("page", 1)
+                # rooms = paginator.get_page(page)
 
         else:
             form = forms.SearchForm()
-            rooms = None
-        return render(request, "rooms/search.html", context={"form": form})
+            rooms = models.Room.objects.filter(city__startswith=city)
+            # return render(request, "rooms/search.html", context={"form": form})
 
         return render(
             request, "rooms/search.html", context={"form": form, "rooms": rooms}

@@ -144,3 +144,5 @@ cython_debug/
 test.py
 
 uploads/
+
+views_spare.py
