@@ -10,6 +10,7 @@ LogIn
 
 
 {% block content %}
+{% include "partials/social_login.html" %}
 <form action="{% url 'users:login' %}" method="POST">
     {% csrf_token %}
     {{form.as_p}}
