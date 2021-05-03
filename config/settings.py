@@ -144,3 +144,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
 MEDIA_URL = "/media/"  # 이건 경로라기 보다는 Url 에 입력되는 키워드에 가까움.
 # media 앞에 / 를 사용하면 절대 경로가 지정된다.
 # urls 에 추가해 줘야함.
+
+# Email Configuration
+
+EMAIL_HOST = "smtp.mailgun.org"
+EMAIL_PORT = "587"
+EMAIL_HOST_USER = os.environ.get("MAILGUN_USERNAME")
+EMAIL_HOST_PASSWORD = os.environ.get("MAILGUN_PASSWORD")
+EMAIL_FROM = "HANUM@sandboxb8bf853cc29f4cc3bf4b1d4ebbd0e59e.mailgun.org"

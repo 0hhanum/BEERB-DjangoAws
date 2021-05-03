@@ -48,11 +48,11 @@ class LoginForm(forms.Form):
                 return self.cleaned_data
 
             else:
-                self.add_error("password", forms.ValidationError("Password is wrong"))
+                self.add_error("password", forms.ValidationError("비밀번호가 틀립니다."))
 
         except models.User.DoesNotExist:
 
-            raise self.add_error("email", forms.ValidationError("User does not exist"))
+            self.add_error("email", forms.ValidationError("존재하지 않는 사용자입니다."))
 
 
 class SignUpForm(forms.ModelForm):
@@ -66,7 +66,7 @@ class SignUpForm(forms.ModelForm):
     def clean_email(self):
         email = self.cleaned_data.get("email")
         try:
-            models.User.objects.get(email=email)
+            models.User.objects.get(username=email)
             raise forms.ValidationError("이미 존재하는 사용자입니다.")
         except models.User.DoesNotExist:
             # 헷갈리면 안됨. User 가 없으면 Error 발생할것임. 그러면 여기로 넘어오는것.
