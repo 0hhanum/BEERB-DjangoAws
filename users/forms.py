@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
 from . import models
 
 
@@ -55,7 +56,32 @@ class LoginForm(forms.Form):
             self.add_error("email", forms.ValidationError("존재하지 않는 사용자입니다."))
 
 
-class SignUpForm(forms.ModelForm):
+class SignUpForm(UserCreationForm):
+    class Meta:
+        model = models.User
+        fields = ("email", "first_name", "last_name")
+
+    def clean_email(self):
+
+        email = self.cleaned_data.get("email")
+
+        try:
+            models.User.objects.get(email=email)
+            raise forms.ValidationError("이미 존재하는 사용자입니다.")
+        except models.User.DoesNotExist:
+            # 헷갈리면 안됨. User 가 없으면 Error 발생할것임. 그러면 여기로 넘어오는것.
+            return email
+
+    def save(self):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data["password1"])
+        email = self.cleaned_data.get("email")
+        user.username = email
+
+        user.save()
+
+
+"""class SignUpForm(forms.ModelForm):
     class Meta:
         model = models.User
         fields = ("first_name", "last_name", "email")
@@ -91,8 +117,7 @@ class SignUpForm(forms.ModelForm):
         user.username = email
         user.set_password(password)
         user.save()
-
-
+"""
 """
 class SignUpForm(forms.Form):
 
