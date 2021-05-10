@@ -10,10 +10,12 @@ LogIn
 
 
 {% block content %}
-{% include "partials/social_login.html" %}
-<form action="{% url 'users:login' %}" method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button>LogIn</button>
-</form>
+<div class="container mx-auto my-40 flex flex-col items-center border-white border-4 p-6 lg:w-5/12 md:w-1/2 rounded-lg">
+    {% include 'partials/social_login.html' %}
+
+    {% include 'mixins/auth/auth_form.html' with form=form cta="로그인" %}
+
+    <div class="flex mt-6"><span class="mr-1">계정이 없으신가요? </span> <a class="text-blue-700 underline"
+            href="{%url 'users:sign-up'%}"> 가입하기</a></div>
+</div>
 {% endblock content %}

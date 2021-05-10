@@ -67,20 +67,20 @@ class User(AbstractUser):
         max_length=50, choices=LOGIN_CHOICES, default=LOGIN_EMAIL
     )
 
-    def verify_email(self):
-        if self.email_verified is False:
-            secret = uuid.uuid4().hex[:20]
-            self.email_secret = secret
-            html_message = render_to_string(
-                "emails/verify_email.html", {"secret": secret}
-            )
-            send_mail(
-                " 본인을 확인해주세요. ",
-                strip_tags(html_message),
-                settings.EMAIL_FROM,
-                [self.email],
-                fail_silently=False,
-                html_message=html_message,
-            )
-        self.save()
-        return
+    # def verify_email(self):
+    #     if self.email_verified is False:
+    #         secret = uuid.uuid4().hex[:20]
+    #         self.email_secret = secret
+    #         html_message = render_to_string(
+    #             "emails/verify_email.html", {"secret": secret}
+    #         )
+    #         send_mail(
+    #             " 본인을 확인해주세요. ",
+    #             strip_tags(html_message),
+    #             settings.EMAIL_FROM,
+    #             [self.email],
+    #             fail_silently=False,
+    #             html_message=html_message,
+    #         )
+    #     self.save()
+    #     return

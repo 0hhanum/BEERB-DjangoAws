@@ -5,8 +5,10 @@ from . import models
 
 class LoginForm(forms.Form):
 
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput())
+    email = forms.EmailField(widget=forms.EmailInput(attrs={"placeholder": "Email"}))
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={"placeholder": "Password"})
+    )
 
     # def clean_email(self):
 
@@ -60,6 +62,18 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = models.User
         fields = ("email", "first_name", "last_name")
+        widgets = {
+            "first_name": forms.TextInput(attrs={"placeholder": "성"}),
+            "last_name": forms.TextInput(attrs={"placeholder": "이름"}),
+            "email": forms.TextInput(attrs={"placeholder": "이메일 주소"}),
+        }
+
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(attrs={"placeholder": "비밀번호"})
+    )
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(attrs={"placeholder": "비밀번호 확인"})
+    )
 
     def clean_email(self):
 

@@ -10,18 +10,27 @@
     </title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
     <link rel="stylesheet" href="{% static  'css/styles.css' %}">
 </head>
 
-<body>
-    <header>
-        {% include 'partials/nav.html' %}
+<body class="text-gray-800 font-mono mt-24 bg-gray-200">
+    <header
+        class="inset-0 container max-w-full flex items-center justify-between pr-6 pl-4 h-20 border-b-4 border-white fixed bg-yellow-400">
+        <div class="flex items-center w-3/5">
+            <a href="{% url 'core:home' %}" class="mr-6">
+                <img class="w-10" src="{%static 'img/beerb_logo.png' %}">
+            </a>
 
-        {% block search_bar %}
-        <form method="get" action="{% url 'rooms:search' %}">
-            <input name='city' placeholder="Search by City">
-        </form>
-        {% endblock search_bar %}
+            {% block search_bar %}
+            <form method="get" action="{% url 'rooms:search' %}" class="w-full">
+                <input
+                    class="search-box border px-5 text-sm font-medium py-2.5 rounded-lg w-2/5 shadow-y-md hover:shadow-y-lg focus:outline-none placeholder-gray-600"
+                    name='city' placeholder="Search by City">
+            </form>
+            {% endblock search_bar %}
+        </div>
+        {% include 'partials/nav.html' %}
 
     </header>
     {% block content %}
