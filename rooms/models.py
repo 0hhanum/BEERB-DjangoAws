@@ -127,5 +127,9 @@ class Room(core_models.TimeStampedModel):
             return "0.0"
 
     def first_photo(self):
-        photo = self.photos.all()[0]
+        try:
+            photo = self.photos.all()[0]
+        except IndexError:
+            return None
+
         return photo.file.url

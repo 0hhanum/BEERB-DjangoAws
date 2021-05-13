@@ -1,12 +1,16 @@
 # from django.views import View
 import os
 import requests
-from django.views.generic import FormView
+
+from django.views.generic import DetailView, UpdateView, FormView
+from django.contrib.auth.views import PasswordChangeView
 from django.urls import reverse_lazy
-from django.shortcuts import redirect, reverse
+from django.shortcuts import get_object_or_404, redirect, reverse, render
 from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 from django.core.files.base import ContentFile
-from . import forms, models
+from django.contrib.messages.views import SuccessMessageMixin
+from . import forms, models, mixins
 
 
 """class LoginView(View):
@@ -29,12 +33,18 @@ from . import forms, models
 
 
 # Using formView
-class LoginView(FormView):
+class LoginView(mixins.LoggedOutOnlyView, FormView):
 
     template_name = "users/login.html"
     form_class = forms.LoginForm
-    success_url = reverse_lazy("core:home")
     initial = {"email": "asdf@dsaf.com"}
+
+    def get_success_url(self):
+        next_arg = self.request.GET.get("next")
+        if next_arg is not None:
+            return next_arg
+        else:
+            return reverse("core:home")
 
     def form_valid(self, form):
         email = form.cleaned_data.get("email")
@@ -42,18 +52,23 @@ class LoginView(FormView):
         user = authenticate(self.request, username=email, password=password)
         if user is not None:
             login(self.request, user)
+            messages.success(
+                self.request, f"{user.first_name} {user.last_name}님, 환영합니다!"
+            )
 
         return super().form_valid(form)
 
 
 def log_out(request):
+    user = request.user
     logout(request)
+    messages.info(request, f"See you later {user.first_name}!")
     return redirect(reverse("core:home"))
 
 
-class SignUpView(FormView):
+class SignUpView(mixins.LoggedOutOnlyView, FormView):
 
-    template_name = "users/sign-up.html"
+    template_name = "users/sign_up.html"
     form_class = forms.SignUpForm
     success_url = reverse_lazy("core:home")
 
@@ -67,6 +82,9 @@ class SignUpView(FormView):
 
         if user is not None:
             login(self.request, user)
+            messages.success(
+                self.request, f"{user.first_name} {user.last_name}님, 환영합니다!"
+            )
             # user.verify_email()
 
         return super().form_valid(form)
@@ -111,7 +129,7 @@ def github_callback(request):
             token_json = token_request.json()
             error = token_json.get("error", None)
             if error is not None:
-                raise GithubException()
+                raise GithubException("잘못된 접근입니다.")
             else:
                 access_token = token_json.get("access_token")
                 profile_request = requests.get(
@@ -135,7 +153,9 @@ def github_callback(request):
                     try:
                         user = models.User.objects.get(email=email)
                         if user.login_method != models.User.LOGIN_GITHUB:
-                            raise GithubException()
+                            raise GithubException(
+                                f"잘못된 접근입니다. {user.login_method}를 이용해 로그인하세요."
+                            )
 
                     except models.User.DoesNotExist:
                         user = models.User.objects.create(
@@ -150,13 +170,19 @@ def github_callback(request):
                         user.save()
 
                     login(request, user)
+                    messages.success(
+                        request, f"{user.first_name} {user.last_name}님, 환영합니다!"
+                    )
                     return redirect(reverse("core:home"))
 
                 else:
-                    raise GithubException()  # Github 에 정보가 충분하지 않습니다 메세지 띄워야함
+                    raise GithubException(
+                        "Github 에 이메일이 등록되어있지 않습니다. 다른 로그인 방법을 이용하세요."
+                    )
         else:
-            raise GithubException
-    except GithubException:
+            raise GithubException("잘못된 접근입니다.")
+    except GithubException as e:
+        messages.error(request, e)
         return redirect(reverse("users:login"))
 
 
@@ -187,7 +213,7 @@ def kakao_callback(request):
         error = token_json.get("error", None)
 
         if error is not None:
-            raise KakaoException()
+            raise KakaoException("잘못된 접근입니다.")
         access_token = token_json.get("access_token")
         profile_request = requests.get(
             "https://kapi.kakao.com/v2/user/me",
@@ -196,7 +222,7 @@ def kakao_callback(request):
         profile_json = profile_request.json()
         email = profile_json.get("kakao_account", None).get("email", None)
         if not email:
-            raise KakaoException()
+            raise KakaoException("이메일 수집 동의에 체크해주세요.")
 
         properties = profile_json.get("properties")
         nickname = properties.get("nickname")
@@ -205,7 +231,7 @@ def kakao_callback(request):
         try:
             user = models.User.objects.get(email=email)
             if user.login_method != models.User.LOGIN_KAKAO:
-                raise KakaoException()
+                raise KakaoException(f"잘못된 접근입니다. {user.login_method} 를 이용해 로그인하세요.")
 
         except models.User.DoesNotExist:
             user = models.User.objects.create(
@@ -226,7 +252,69 @@ def kakao_callback(request):
                 # content() 는 binary 로 image 를 변환, ContentFile 은 binary 를 읽어줌
                 # save 는 ImageField 의 저장 메소드
         login(request, user)
+        messages.success(request, f"{user.first_name} {user.last_name}님, 환영합니다!")
         return redirect(reverse("core:home"))
 
-    except KakaoException:
+    except KakaoException as e:
+        messages.error(request, e)
         return redirect(reverse("users:login"))
+
+
+class UserProfileView(DetailView):
+
+    """ User Profile View Description """
+
+    model = models.User
+    context_object_name = "user_obj"
+
+
+class UpdateProfileView(SuccessMessageMixin, mixins.LoggedInOnlyView, UpdateView):
+
+    model = models.User
+    template_name = "users/update_profile.html"
+    fields = (
+        "first_name",
+        "last_name",
+        "gender",
+        "bio",
+        "language",
+        "currency",
+    )
+    success_message = "변경 완료!"
+
+    def get_object(self, queryset=None):
+
+        return self.request.user
+
+
+class UpdateAvatarView(UpdateView):
+
+    """ Update Avatar View Description """
+
+    model = models.User
+    template_name = "users/update_avatar.html"
+    fields = ("avatar",)
+    success_url = reverse_lazy("users:update-avatar-done")
+
+    def get_object(self, queryset=None):
+
+        return self.request.user
+
+
+def update_avatar_done(request):
+
+    return render(request, "update_done.html")
+
+
+class UpdatePasswordView(
+    SuccessMessageMixin,
+    mixins.EmailLoginOnlyView,
+    mixins.LoggedInOnlyView,
+    PasswordChangeView,
+):
+
+    template_name = "users/update_password.html"
+    success_message = "변경 완료!"
+
+    def get_success_url(self):
+        return reverse("users:profile", kwargs={"pk": self.request.user.pk})

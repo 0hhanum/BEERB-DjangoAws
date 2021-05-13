@@ -16,13 +16,60 @@
     @apply text-center rounded-md p-5 flex items-center justify-center font-medium;
 }
 
-input{
-    @apply mb-3 w-full focus:outline-none text-left rounded-md p-5 flex items-center justify-center font-medium;
+.input-box{
+    input, select{
+        @apply mb-3 w-full focus:outline-none text-left rounded-md p-5 flex items-center justify-center font-medium;
+    }
 }
 
 form {
     input{
         @apply mb-3;
+    }
+}
+
+textarea{
+    @apply mb-3 w-full focus:outline-none text-left rounded-md p-5 flex items-center justify-center font-medium resize-none h-40;
+}
+
+
+@keyframes messageFadeIn {
+    0% {
+        opacity: 0;
+        transform:translateY(-15px)
+    }
+    10% {
+        opacity: 1;
+        transform:translateY(15px)
+    }
+    90% {
+        opacity: 1;
+        transform:translateY(15px)
+    }
+    99% {
+        opacity: 0;
+        transform:translateY(-15px)
+    }
+    100% {
+        opacity: 0;
+        transform:translateY(-20px)
+    }
+
+}
+
+.message{
+    animation: messageFadeIn 3s ease-in-out forwards;
+    &.error{
+        @apply bg-red-600 text-white font-normal;
+    }
+    &.info{
+        @apply bg-blue-400 text-white font-light;
+    }
+    &.success{
+        @apply bg-gray-100;
+    }
+    &.warning{
+        @apply bg-blue-400;
     }
 }
 

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+
+{% block page_title %}
+Update Profile
+{% endblock page_title %}
+
+{% block search_bar %}
+{% endblock search_bar %}
+
+
+{% block content %}
+<div class="container mx-auto my-40 flex flex-col items-center border-white border-4 p-6 lg:w-5/12 md:w-1/2 rounded-lg">
+    <span class="flex w-full justify-center text-blue-600 text-3xl font-light mb-8 mt-3">프로필 변경</span>
+    {% include 'mixins/auth/update_form.html' with form=form cta="수정하기" %}
+
+    {% if user.login_method == "email" %}
+    <a class="text-blue-600 font-light mt-6 underline" href="{%url 'users:password'%}">비밀번호 변경하기</a>
+    {% endif %}
+</div>
+{% endblock content %}

@@ -178,7 +178,6 @@ class SearchView(View):
         city = request.GET.get("city")
         if country:
             form = forms.SearchForm(request.GET)
-
             # request.GET 을 통해 변수 form 에 html form 을 통해서 넘어온 정보가 저장됨.
             if form.is_valid():
 
@@ -233,8 +232,7 @@ class SearchView(View):
 
                 for facility in facilities:
                     rooms = rooms.filter(facilities=facility)
-                print(rooms)
-                print(filter_args)
+
                 # paginator = Paginator(qs, 10, orphans=5)
 
                 # page = request.GET.get("page", 1)

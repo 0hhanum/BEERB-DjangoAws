@@ -14,7 +14,7 @@
     <h3>{{room.description}}</h3>
 </div>
 <div>
-    <h2>By: {{room.host.username}}
+    <h2>By: <a href="{%url 'users:profile' room.host.pk%}">{{room.host.username}}</a>
         {% if room.host.superhost %}
         (superhost)
         {% endif %}
