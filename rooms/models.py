@@ -133,3 +133,20 @@ class Room(core_models.TimeStampedModel):
             return None
 
         return photo.file.url
+
+    def get_next_photos(self):
+        default_photo = Photo.objects.get(caption="Default")
+        photos = self.photos.all()[1:]
+        if len(photos) >= 4:
+            photos = photos[:4]
+        else:
+            while len(photos) < 4:
+                photos = list(photos)
+                photos.append(default_photo)
+        return photos
+
+    def get_beds(self):
+        if self.beds == 1:
+            return "1 bed"
+        else:
+            return f"{self.beds} beds"

@@ -3,16 +3,19 @@
 
     {% if user == user_obj %}
     <a href="{%url 'users:update-avatar'%}" class=" z-0 w-full h-full block"
-        onclick="window.open(this.href, '_blank', 'width=600, height=300'); return false;">
-        {% endif %}
+        onclick="window.open(this.href, '_blank', 'width=600, height=300'); return false;"></a>
+    {% endif %}
+</div>
 
-        {% else %}
-        <div class="h-20 w-20 bg-yellow-400 rounded-full text-white flex justify-center items-center">
-            {%if user == user_obj%}
-            <a href="{%url 'users:update-avatar'%}" class=" z-0 w-full h-full block flex justify-center items-center"
-                onclick="window.open(this.href, '_blank', 'width=600, height=300'); return false;">
-                {% endif %}
-                <span class="text-4xl font-light">{{user_obj.first_name|first}}</span>
-                {% endif %}
-            </a>
-        </div>
+{% else %}
+<div class="h-20 w-20 bg-yellow-400 rounded-full text-white flex justify-center items-center">
+    {%if user == user_obj%}
+    <a href="{%url 'users:update-avatar'%}" class="z-0 w-full h-full flex justify-center items-center"
+        onclick="window.open(this.href, '_blank', 'width=600, height=300'); return false;">
+        <span class="text-4xl font-light z-10">{{user_obj.first_name|first}}</span></a>
+    {% else %}
+    <span class="text-4xl font-light z-10">{{user_obj.first_name|first}}</span></a>
+    {% endif %}
+
+</div>
+{% endif %}
