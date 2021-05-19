@@ -144,9 +144,3 @@ class Room(core_models.TimeStampedModel):
                 photos = list(photos)
                 photos.append(default_photo)
         return photos
-
-    def get_beds(self):
-        if self.beds == 1:
-            return "1 bed"
-        else:
-            return f"{self.beds} beds"
