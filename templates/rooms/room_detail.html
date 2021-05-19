@@ -39,11 +39,11 @@
             {% endif %}
         </div>
         <div class="flex border-section mt-3">
-            <span class="mr-5 font-medium text-gray-700">{{room.room_type}}</span>
-            <span class="mr-5 font-medium text-gray-700">침대 {{room.beds}}개</span>
-            <span class="mr-5 font-medium text-gray-700">방 {{room.bedrooms}}개</span>
-            <span class="mr-5 font-medium text-gray-700">화장실 {{room.baths}}개</span>
-            <span class="mr-5 font-medium text-gray-700">게스트 {{room.guests}}명</span>
+            <span class="mr-4 font-medium text-gray-700">{{room.room_type}}</span>
+            <span class="mr-3 font-medium text-gray-700">침대 {{room.beds}} 개 |</span>
+            <span class="mr-3 font-medium text-gray-700">방 {{room.bedrooms}} 개 |</span>
+            <span class="mr-3 font-medium text-gray-700">화장실 {{room.baths}} 개 |</span>
+            <span class="mr-3 font-medium text-gray-700">게스트 {{room.guests}} 명</span>
         </div>
         <p class="border-section text-sm">{{room.description}}</p>
         <div class="border-section">
@@ -74,13 +74,35 @@
             </div>
         </div>
         {% endif %}
-        <div class="border-section">
+        <div class="mt-10">
             <div>
                 <h4 class="text-3xl font-light mb-7">방문자 리뷰</h4>
-                <div>
-                    {{room.total_rating}}
-                    {{room.reviews.count}} 개의 리뷰
+                <div class="flex items-center">
+                    <div>
+                        <i class="fas fa-star text-green-500"></i>
+                        <span class="text-bold text-xl">{{room.total_rating}}</span>
+                    </div>
+                    <div class="h-5 w-px bg-gray-400 mx-4"></div>
+                    <div>
+                        <span>{{room.reviews.count}} 개의 리뷰</span>
+                    </div>
+                </div>
+                <div class="mt-16">
+                    {% for r in room.reviews.all %}
+                    <div class='border-section'>
+                        <div class="mb-3 flex">
+                            <div>
+                                {% include 'mixins/user_avatar.html' with user_obj=r.user h_and_w='w-10 h-10' %}
 
+                            </div>
+                            <div class="flex flex-col ml-5">
+                                <span class="mb-1">{{r.user.first_name}}</span>
+                                <span class="text-sm text-gray-500">{{r.created}}</span>
+                            </div>
+                        </div>
+                        <p>{{r.review}}</p>
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>

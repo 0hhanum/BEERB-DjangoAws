@@ -1,5 +1,6 @@
 {% if user_obj.avatar %}
-<div class="h-20 w-20 rounded-full bg-cover " style="background-image: url({{user_obj.avatar.url}});">
+<div class="{{h_and_w|default:'h-20 w-20'}} rounded-full bg-cover "
+    style="background-image: url({{user_obj.avatar.url}});">
 
     {% if user == user_obj %}
     <a href="{%url 'users:update-avatar'%}" class=" z-0 w-full h-full block"
@@ -8,7 +9,7 @@
 </div>
 
 {% else %}
-<div class="h-20 w-20 bg-yellow-400 rounded-full text-white flex justify-center items-center">
+<div class="{{h_and_w|default:'h-20 w-20'}} bg-yellow-400 rounded-full text-white flex justify-center items-center">
     {%if user == user_obj%}
     <a href="{%url 'users:update-avatar'%}" class="z-0 w-full h-full flex justify-center items-center"
         onclick="window.open(this.href, '_blank', 'width=600, height=300'); return false;">
