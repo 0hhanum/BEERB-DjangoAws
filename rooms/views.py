@@ -1,10 +1,13 @@
-from django.shortcuts import render
-from django.views.generic import ListView, DetailView, View
-
 # from django.core.paginator import Paginator
-from . import models, forms
+from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.views.generic import ListView, DetailView, UpdateView, View
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from users import mixins as user_mixins
+from . import models, forms, mixins
 
-# from django.urls import reverse
+
 # from django.http import Http404
 # from django.core.paginator import Paginator, EmptyPage
 # from django.utils import timezone
@@ -246,3 +249,49 @@ class SearchView(View):
         return render(
             request, "rooms/search.html", context={"form": form, "rooms": rooms}
         )
+
+
+class EditRoomView(mixins.RoomHostOnlyView, user_mixins.LoggedInOnlyView, UpdateView):
+
+    """ Edit Room View Description """
+
+    model = models.Room
+    template_name = "rooms/room_edit.html"
+
+    fields = (
+        "name",
+        "description",
+        "country",
+        "city",
+        "price",
+        "address",
+        "guests",
+        "beds",
+        "bedrooms",
+        "baths",
+        "check_in",
+        "check_out",
+    )
+
+
+class RoomPhotosView(mixins.RoomHostOnlyView, user_mixins.LoggedInOnlyView, DetailView):
+
+    """ Room Photos View Description """
+
+    model = models.Room
+    template_name = "rooms/room_photos.html"
+
+
+@login_required
+def delete_photo(request, room_pk, photo_pk):
+
+    try:
+        room = models.Room.objects.get(pk=room_pk)
+        if room.host == request.user:
+            photo = models.Photo.objects.get(pk=photo_pk)
+            photo.delete()
+            messages.warning(request, "삭제되었습니다")
+    except models.Room.DoesNotExist:
+        return redirect(reverse("core:home"))
+
+    return redirect(reverse("rooms:photos", kwargs={"pk": room_pk}))

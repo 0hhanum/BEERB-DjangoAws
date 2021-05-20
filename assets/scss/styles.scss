@@ -66,10 +66,10 @@ textarea{
         @apply bg-blue-400 text-white font-light;
     }
     &.success{
-        @apply bg-gray-100;
+        @apply bg-gray-100 font-light;
     }
     &.warning{
-        @apply bg-blue-400;
+        @apply bg-green-400 text-white font-light;
     }
 }
 

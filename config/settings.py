@@ -154,3 +154,7 @@ EMAIL_PORT = "587"
 EMAIL_HOST_USER = os.environ.get("MAILGUN_USERNAME")
 EMAIL_HOST_PASSWORD = os.environ.get("MAILGUN_PASSWORD")
 EMAIL_FROM = "HANUM@sandboxb8bf853cc29f4cc3bf4b1d4ebbd0e59e.mailgun.org"
+
+
+# for login required decorator (Photo Delete function)
+LOGIN_URL = "/users/login"

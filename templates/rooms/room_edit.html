@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+
+{% block page_title %}
+Update Room
+{% endblock page_title %}
+
+{% block search_bar %}
+{% endblock search_bar %}
+
+
+{% block content %}
+<div class="container mx-auto my-40 flex flex-col items-center border-white border-4 p-6 lg:w-5/12 md:w-1/2 rounded-lg">
+    <span class="flex w-full justify-center text-blue-600 text-3xl font-light mb-8 mt-3">숙소 정보 변경</span>
+    {% include 'mixins/auth/update_form.html' with form=form cta="변경하기" %}
+    <a class="btn mt-4 border-4 text-gray-800 font-light text-xl bg-green-300 border-white w-full"
+        href="{% url 'rooms:photos' room.pk %}">
+        사진 변경하기
+    </a>
+</div>
+{% endblock content %}

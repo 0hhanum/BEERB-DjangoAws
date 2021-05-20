@@ -73,18 +73,20 @@ class Room(core_models.TimeStampedModel):
 
     """ Room Model Definition """
 
-    name = models.CharField(max_length=140)
-    description = models.TextField()
-    country = CountryField()
-    city = models.CharField(max_length=80)
-    price = models.IntegerField()
-    address = models.CharField(max_length=140)
-    guests = models.IntegerField(help_text="How many people will staying?")
-    beds = models.IntegerField()
-    bedrooms = models.IntegerField()
-    baths = models.IntegerField()
-    check_in = models.TimeField()
-    check_out = models.TimeField()
+    name = models.CharField(max_length=140, verbose_name="숙소명")
+    description = models.TextField(verbose_name="설명")
+    country = CountryField(verbose_name="국가")
+    city = models.CharField(max_length=80, verbose_name="도시")
+    price = models.IntegerField(verbose_name="요금")
+    address = models.CharField(max_length=140, verbose_name="주소")
+    guests = models.IntegerField(
+        help_text="How many people will staying?", verbose_name="게스트 수"
+    )
+    beds = models.IntegerField(verbose_name="침대")
+    bedrooms = models.IntegerField(verbose_name="방")
+    baths = models.IntegerField(verbose_name="화장실")
+    check_in = models.TimeField(verbose_name="체크인")
+    check_out = models.TimeField(verbose_name="체크아웃")
     instant_book = models.BooleanField(default=False)
     host = models.ForeignKey(
         "users.User", related_name="rooms", on_delete=models.CASCADE
