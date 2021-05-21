@@ -19,7 +19,8 @@
             <span class="ml-5 mt-5">{{photo.caption}}</span>
         </div>
         <div class="flex flex-col">
-            <a class="whitespace-nowrap btn text-2xl font-light text-gray-800" href="#">수정</a>
+            <a class="whitespace-nowrap btn text-2xl font-light text-gray-800"
+                href="{% url 'rooms:edit-photo' room.pk photo.pk %}">수정</a>
             <a class="whitespace-nowrap btn text-2xl font-light text-red-500"
                 href="{% url 'rooms:del-photo' room.pk photo.pk %}">삭제</a>
         </div>

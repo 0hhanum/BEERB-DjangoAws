@@ -1,5 +1,5 @@
 # from django.core.paginator import Paginator
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.views.generic import ListView, DetailView, UpdateView, View
 from django.contrib.auth.decorators import login_required
@@ -273,6 +273,10 @@ class EditRoomView(mixins.RoomHostOnlyView, user_mixins.LoggedInOnlyView, Update
         "check_out",
     )
 
+    def get_success_url(self):
+        messages.warning(self.request, "변경 완료!")
+        return super().get_success_url()
+
 
 class RoomPhotosView(mixins.RoomHostOnlyView, user_mixins.LoggedInOnlyView, DetailView):
 
@@ -290,8 +294,29 @@ def delete_photo(request, room_pk, photo_pk):
         if room.host == request.user:
             photo = models.Photo.objects.get(pk=photo_pk)
             photo.delete()
-            messages.warning(request, "삭제되었습니다")
+            messages.error(request, "삭제되었습니다")
     except models.Room.DoesNotExist:
         return redirect(reverse("core:home"))
 
     return redirect(reverse("rooms:photos", kwargs={"pk": room_pk}))
+
+
+class EditPhotoView(UpdateView):
+
+    """ Edit Photo View Description """
+
+    model = models.Photo
+    template_name = "rooms/photo_edit.html"
+    fields = ("caption",)
+
+    def get_object(self, queryset=None):
+
+        photo = get_object_or_404(models.Photo, pk=self.kwargs.get("photo_pk"))
+
+        return photo
+
+    def get_success_url(self):
+        room_pk = int(self.kwargs.get("room_pk"))
+        messages.warning(self.request, "변경 완료!")
+
+        return reverse("rooms:photos", kwargs={"pk": room_pk})
