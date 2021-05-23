@@ -1,9 +1,10 @@
 # from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
-from django.views.generic import ListView, DetailView, UpdateView, View
+from django.views.generic import ListView, DetailView, UpdateView, FormView, View
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.views.generic.edit import FormView
 from users import mixins as user_mixins
 from . import models, forms, mixins
 
@@ -301,7 +302,7 @@ def delete_photo(request, room_pk, photo_pk):
     return redirect(reverse("rooms:photos", kwargs={"pk": room_pk}))
 
 
-class EditPhotoView(UpdateView):
+class EditPhotoView(mixins.PhotoHostOnlyView, user_mixins.LoggedInOnlyView, UpdateView):
 
     """ Edit Photo View Description """
 
@@ -320,3 +321,22 @@ class EditPhotoView(UpdateView):
         messages.warning(self.request, "변경 완료!")
 
         return reverse("rooms:photos", kwargs={"pk": room_pk})
+
+
+class UploadPhotoView(user_mixins.LoggedInOnlyView, FormView):
+
+    model = models.Photo
+    template_name = "rooms/upload_photo.html"
+    fields = ("file", "caption")
+    form_class = forms.CreatePhotoForm
+
+    def form_valid(self, form):
+        pk = self.kwargs.get("pk")
+        room = models.Room.objects.get(pk=pk)
+        if room.host == self.request.user:
+            form.save(pk)  # View 에서 Form 으로 무언가를 전달하는 방법.
+            messages.warning(self.request, "추가 완료!")
+            return redirect(reverse("rooms:photos", kwargs={"pk": pk}))
+        else:
+            messages.error(self.request, "잘못된 접근입니다.")
+            return redirect(reverse("core:home"))

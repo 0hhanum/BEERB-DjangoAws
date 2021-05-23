@@ -27,3 +27,16 @@ class SearchForm(forms.Form):
         widget=forms.CheckboxSelectMultiple,
         required=False,
     )
+
+
+class CreatePhotoForm(forms.ModelForm):
+    class Meta:
+        model = models.Photo
+        fields = ("file", "caption")
+
+    def save(self, pk, *args, **kwargs):  # View 에서 넘어온 인자 pk.
+
+        photo = super().save(commit=False)
+        room = models.Room.objects.get(pk=pk)
+        photo.room = room
+        photo.save()

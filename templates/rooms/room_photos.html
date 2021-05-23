@@ -26,6 +26,13 @@
         </div>
     </div>
     {% endfor %}
+    <a class="btn border-4 text-gray-800 font-light text-xl bg-green-300 border-white w-1/2"
+        href="{% url 'rooms:add-photo' room.pk %}">
+        사진 추가하기</a>
+    <a class="btn mt-4 border-4 text-gray-600 font-light text-xl bg-gray-100 border-white hover:bg-blue-300 hover:text-white transition duration-500 ease-in-out w-1/2"
+        href="{% url 'rooms:edit' room.pk %}">
+        돌아가기
+    </a>
 
 
 </div>

@@ -27,8 +27,8 @@ class PhotoHostOnlyView(UserPassesTestMixin):
 
     def test_func(self):
 
-        host = self.get_object()
-        print(host)
+        host = self.get_object().room.host
+
         if self.request.user == host:
             return True
         else:
