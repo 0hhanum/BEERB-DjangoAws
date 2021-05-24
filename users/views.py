@@ -7,6 +7,8 @@ from django.contrib.auth.views import PasswordChangeView
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404, redirect, reverse, render
 from django.contrib.auth import authenticate, login, logout
+
+# from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.files.base import ContentFile
 from django.contrib.messages.views import SuccessMessageMixin
@@ -318,3 +320,16 @@ class UpdatePasswordView(
 
     def get_success_url(self):
         return reverse("users:profile", kwargs={"pk": self.request.user.pk})
+
+
+# @login_required
+# def switch_hosting(request):
+#     try:
+#         del request.session["is_hosting"]
+#         messages.success(request, "게스트 모드입니다.")
+
+#     except KeyError:
+#         messages.success(request, "호스트 모드입니다.")
+#         request.session["is_hosting"] = True
+
+#     return redirect(reverse_lazy("core:home"))

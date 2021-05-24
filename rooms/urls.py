@@ -5,6 +5,7 @@ from . import views
 app_name = "rooms"
 
 urlpatterns = [
+    path("create/", views.CreateRoomView.as_view(), name="create"),
     path("<int:pk>/", views.RoomDetail.as_view(), name="detail"),  # pk 라는 이름 부여해준것.
     path("<int:pk>/edit/", views.EditRoomView.as_view(), name="edit"),
     path("<int:pk>/photos/", views.RoomPhotosView.as_view(), name="photos"),

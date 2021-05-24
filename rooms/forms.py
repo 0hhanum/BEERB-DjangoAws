@@ -40,3 +40,34 @@ class CreatePhotoForm(forms.ModelForm):
         room = models.Room.objects.get(pk=pk)
         photo.room = room
         photo.save()
+
+
+class CreateRoomForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(CreateRoomForm, self).__init__(*args, **kwargs)
+        self.fields["check_in"].widget.attrs["placeholder"] = "00:00"
+        self.fields["check_out"].widget.attrs["placeholder"] = "00:00"
+
+    class Meta:
+        model = models.Room
+        fields = (
+            "name",
+            "description",
+            "country",
+            "city",
+            "price",
+            "address",
+            "guests",
+            "beds",
+            "bedrooms",
+            "baths",
+            "check_in",
+            "check_out",
+            "amenities",
+            "facilities",
+            "house_rules",
+        )
+
+    def save(self, *args, **kwargs):
+        room = super().save(commit=False)
+        return room

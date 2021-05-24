@@ -12,8 +12,12 @@ HOME
 
 <div class="container mx-auto">
 
-    <div class="mx-auto bg-gray-800 h-50vh w-11/12 mt-40 rounded-xl bg-cover bg-center"
-        style="background-image: url({% static 'img/home_banner.jpg' %})"></div>
+    <div class="mx-auto bg-gray-800 h-50vh w-11/12 mt-40 rounded-xl bg-cover bg-center "
+        style="background-image: url({% static 'img/home_banner.jpg' %})">
+        <a href="{% url 'rooms:create' %}" class="flex justify-center items-center h-full w-full">
+            <span class=" text-banner font-light text-purple-300">숙소 등록하기</span>
+        </a>
+    </div>
 
     <div class="flex flex-wrap mt-16">
         {% for room in rooms %}

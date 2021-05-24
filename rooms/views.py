@@ -4,7 +4,6 @@ from django.urls import reverse
 from django.views.generic import ListView, DetailView, UpdateView, FormView, View
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.views.generic.edit import FormView
 from users import mixins as user_mixins
 from . import models, forms, mixins
 
@@ -272,6 +271,9 @@ class EditRoomView(mixins.RoomHostOnlyView, user_mixins.LoggedInOnlyView, Update
         "baths",
         "check_in",
         "check_out",
+        "amenities",
+        "facilities",
+        "house_rules",
     )
 
     def get_success_url(self):
@@ -325,9 +327,7 @@ class EditPhotoView(mixins.PhotoHostOnlyView, user_mixins.LoggedInOnlyView, Upda
 
 class UploadPhotoView(user_mixins.LoggedInOnlyView, FormView):
 
-    model = models.Photo
     template_name = "rooms/upload_photo.html"
-    fields = ("file", "caption")
     form_class = forms.CreatePhotoForm
 
     def form_valid(self, form):
@@ -340,3 +340,18 @@ class UploadPhotoView(user_mixins.LoggedInOnlyView, FormView):
         else:
             messages.error(self.request, "잘못된 접근입니다.")
             return redirect(reverse("core:home"))
+
+
+class CreateRoomView(user_mixins.LoggedInOnlyView, FormView):
+
+    form_class = forms.CreateRoomForm
+    template_name = "rooms/room_create.html"
+
+    def form_valid(self, form):
+        room = form.save()
+        room.host = self.request.user
+        room.save()
+        form.save_m2m()  # Many to Many 저장. 참조할 model 이 있어야 하기 때문에 room 저장 후 호출해야함.
+        messages.success(self.request, "등록 완료!")
+
+        return redirect(reverse("rooms:detail", kwargs={"pk": room.pk}))

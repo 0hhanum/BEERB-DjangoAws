@@ -19,4 +19,5 @@ urlpatterns = [
     path("update-avatar/", views.UpdateAvatarView.as_view(), name="update-avatar"),
     path("update-avatar-done/", views.update_avatar_done, name="update-avatar-done"),
     path("update-password/", views.UpdatePasswordView.as_view(), name="password"),
+    # path("switch_hosting/", views.switch_hosting, name="switch-hosting"),
 ]

@@ -60,8 +60,10 @@ class Photo(core_models.TimeStampedModel):
 
     """ Photo Model Definition """
 
-    caption = models.CharField(max_length=80)
-    file = models.ImageField(upload_to="room-photos")  # media root 안의 어떤 폴더에 저장할 건지 설정.
+    caption = models.CharField(max_length=80, verbose_name="설명")
+    file = models.ImageField(
+        upload_to="room-photos", verbose_name="파일"
+    )  # media root 안의 어떤 폴더에 저장할 건지 설정.
     room = models.ForeignKey("Room", related_name="photos", on_delete=models.CASCADE)
     # "Room" 처리한 이유는 Room 클래스가 아래에 있기 떄문에 Photo 를 아래로 옮기거나 string 처리해서 읽을 수 있음. 장고의 기능.
 
@@ -80,11 +82,11 @@ class Room(core_models.TimeStampedModel):
     price = models.IntegerField(verbose_name="요금")
     address = models.CharField(max_length=140, verbose_name="주소")
     guests = models.IntegerField(
-        help_text="How many people will staying?", verbose_name="게스트 수"
+        help_text="How many people will staying?", verbose_name="최대 가능 게스트 수"
     )
-    beds = models.IntegerField(verbose_name="침대")
-    bedrooms = models.IntegerField(verbose_name="방")
-    baths = models.IntegerField(verbose_name="화장실")
+    beds = models.IntegerField(verbose_name="침대 개수")
+    bedrooms = models.IntegerField(verbose_name="방 개수")
+    baths = models.IntegerField(verbose_name="화장실 개수")
     check_in = models.TimeField(verbose_name="체크인")
     check_out = models.TimeField(verbose_name="체크아웃")
     instant_book = models.BooleanField(default=False)
@@ -96,9 +98,15 @@ class Room(core_models.TimeStampedModel):
         "RoomType", related_name="rooms", on_delete=models.SET_NULL, null=True
     )
     # many to many 구조를 사용해야할 때는 ManyToManyField 를 사용한다.
-    amenities = models.ManyToManyField("Amenity", related_name="rooms", blank=True)
-    facilities = models.ManyToManyField("Facility", related_name="rooms", blank=True)
-    house_rules = models.ManyToManyField("HouseRule", related_name="rooms", blank=True)
+    amenities = models.ManyToManyField(
+        "Amenity", related_name="rooms", blank=True, verbose_name="편의시설"
+    )
+    facilities = models.ManyToManyField(
+        "Facility", related_name="rooms", blank=True, verbose_name="기타"
+    )
+    house_rules = models.ManyToManyField(
+        "HouseRule", related_name="rooms", blank=True, verbose_name="주의사항"
+    )
 
     def get_absolute_url(self):
 
