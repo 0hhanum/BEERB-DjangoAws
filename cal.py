@@ -1,6 +1,16 @@
 # 달력 구현하기.
-
+from django.utils import timezone
 import calendar
+
+
+class Day:
+    def __init__(self, number, past):
+
+        self.number = number
+        self.past = past
+
+    def __str__(self):
+        return str(self.number)
 
 
 class Calendar(calendar.Calendar):
@@ -13,7 +23,10 @@ class Calendar(calendar.Calendar):
     def get_days(self):
         weeks = self.monthdays2calendar(self.year, self.month)
         days = []
+        now = timezone.now()
+        today = now.day
         for week in weeks:
-            for date in week:
-                days.append(date[0])
+            for day, _ in week:
+                new_day = Day(day, day < today)
+                days.append(new_day)
         return days

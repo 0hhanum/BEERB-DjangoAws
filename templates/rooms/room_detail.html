@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 
-
 {% block page_title %}
 {{room.name}}
 {% endblock page_title %}
@@ -115,7 +114,8 @@
             class="btn bg-gray-300 hover:bg-blue-400 hover:text-gray-100 transition-all duration-500 ease-in-out ">수정하기</a>
         {% else %}
 
-        {% for calendar in room.get_calendars %}
+        {% for index, calendar in room.get_calendars %}
+
         <div class="mb-20 w-4/5">
             <span class="block mb-8 text-center font-semibold text-lg">{{calendar.month}} / {{calendar.year}}</span>
             <div class="cal-grid mb-4">
@@ -125,13 +125,19 @@
             </div>
             <div class="cal-grid font-light text-gray-500">
                 {% for day in calendar.get_days %}
-                {% if day != 0 %}
+                {% if day.number != 0 %}
+                {% if day.past and index == 0 %}
+
+                <span class="bg-gray-300 w-full text-center font-light rounded text-gray-200 p-1">{{day}}</span>
+                {% else %}
                 <span
-                    class="bg-gray-300 w-full text-center rounded text-gray-700 p-1 hover:bg-blue-300 hover:text-white cursor-pointer">{{day}}</span>
+                    class="bg-gray-300 w-full text-center font-light rounded text-gray-700 p-1 hover:bg-blue-300 hover:text-white cursor-pointer">{{day}}</span>
+                {% endif %}
                 {% else %}
                 <span></span>
                 {% endif %}
                 {% endfor %}
+
             </div>
 
         </div>

@@ -36,7 +36,7 @@ class Command(BaseCommand):
                 "room": lambda x: random.choice(rooms),
                 "check_in": lambda x: datetime.now(),
                 "check_out": lambda x: datetime.now()
-                + timedelta(days=random.randint(3, 25)),
+                + timedelta(days=random.randint(3, 10)),
             },
         )
 
