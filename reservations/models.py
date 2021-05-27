@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from core import models as core_models
 from django.utils import timezone
@@ -11,6 +12,10 @@ class BookedDay(core_models.TimeStampedModel):
     class Meta:
         verbose_name = "Booked Day"
         verbose_name_plural = "Booked Day"
+
+    def __str__(self):
+
+        return str(self.day)
 
 
 class Reservation(core_models.TimeStampedModel):
@@ -31,7 +36,7 @@ class Reservation(core_models.TimeStampedModel):
         max_length=12, choices=STATUS_CHOICES, default=STATUS_PENDING
     )
     check_in = models.DateField()
-    check_out = models.DateField()
+    check_out = models.DateField(blank=True, null=True, default=0)
     guest = models.ForeignKey(
         "users.User", related_name="reservations", on_delete=models.CASCADE
     )
@@ -54,16 +59,27 @@ class Reservation(core_models.TimeStampedModel):
 
     is_finished.boolean = True
 
+    def clean(self):  # Seed 때문에 만듬. save 에서 호출.
+        if not self.check_out:
+            self.check_out = self.check_in + datetime.timedelta(days=1)
+
     def save(self, *args, **kwargs):
-        if self.pk is None:
+        self.clean()
+        # if self.pk is None:
+        if True:
             start = self.check_in
             end = self.check_out
             difference = end - start
             existing_booked_day = BookedDay.objects.filter(
-                day__range=(start, end)
+                day__range=(start, end + datetime.timedelta(days=1)),
+                reservation__room=self.room,
             ).exists()
 
-            if existing_booked_day == False:
-                pass
+            if not existing_booked_day:
+
+                super().save(*args, **kwargs)
+                for i in range(difference.days + 1):
+                    day = start + datetime.timedelta(days=i)
+                    BookedDay.objects.create(day=day, reservation=self)
         else:
             return super().save(*args, **kwargs)
