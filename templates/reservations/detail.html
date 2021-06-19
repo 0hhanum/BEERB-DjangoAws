@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+
+{% block page_title %}
+{{reservation.room}} Reservation: {{reservation.check_in}}
+{% endblock page_title %}
+
+{% block search_bar %}
+{% endblock search_bar %}
+
+
+{% block content %}
+<div class="container mx-auto my-10 flex flex-col px-20">
+    <div class="bg-cover bg-center h-60 rounded-t-lg mt-12"
+        style="background-image: url({{reservation.room.first_photo}});">
+    </div>
+    <div class="py-12 px-5 flex flex-col">
+        <div class="border-b border-gray-400 py-5">
+            {{reservation.check_in}} - {{reservation.check_out}} <span
+                class="text-blue-600">{{reservation.status}}</span>
+        </div>
+        <div class="flex py-8 items-center border-b border-gray-400">
+            <div>
+                {% include 'mixins/link_removed_user_avatar.html' with user_obj=reservation.room.host %}
+                <span class="mt-2 font-light text-gray-500">{{reservation.room.host.first_name}}</span>
+            </div>
+            <span class="text-xl pl-8">
+                {{reservation.room.name}}
+            </span>
+        </div>
+        <div class="flex justify-end my-8">
+            <a href="#" class="font-light  text-2xl mx-8">호스트에게 연락하기</a>
+            <span class="text-2xl font-light">/</span>
+            <a href="#" class="font-light text-2xl ml-8">예약취소</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}
