@@ -17,21 +17,34 @@
     <div class="py-12 px-5 flex flex-col">
         <div class="border-b border-gray-400 py-5">
             {{reservation.check_in}} - {{reservation.check_out}} <span
-                class="text-blue-600">{{reservation.status}}</span>
+                class="{% if reservation.status == 'pending' %}text-blue-600{% elif reservation.status == 'canceled' %} text-red-600 {% else %} text-green-500 {% endif %}">{{reservation.get_status_display}}</span>
         </div>
         <div class="flex py-8 items-center border-b border-gray-400">
-            <div>
+            <div class="flex flex-col items-center justify-center">
                 {% include 'mixins/link_removed_user_avatar.html' with user_obj=reservation.room.host %}
                 <span class="mt-2 font-light text-gray-500">{{reservation.room.host.first_name}}</span>
             </div>
-            <span class="text-xl pl-8">
-                {{reservation.room.name}}
-            </span>
+            <div class="flex flex-col justify-center items-start pl-8">
+                <span class="text-xl">
+                    {{reservation.room.name}}
+                </span>
+                {% if reservation.room.host != user %}
+                <a href="#" class="text-lg text-blue-400 py-3">호스트에게 연락하기</a>
+                {% endif %}
+            </div>
         </div>
-        <div class="flex justify-end my-8">
-            <a href="#" class="font-light  text-2xl mx-8">호스트에게 연락하기</a>
-            <span class="text-2xl font-light">/</span>
-            <a href="#" class="font-light text-2xl ml-8">예약취소</a>
+        <div class="flex justify-end my-8 items-center">
+
+            {% if reservation.status == 'pending' %}
+            {% if reservation.room.host == user %}
+            <a href="{% url 'reservations:edit' reservation.pk 'confirm' %}"
+                class="font-light text-2xl ml-8 text-gray-100 rounded-md bg-blue-400 p-3">예약 승인</a>
+            {% endif %}
+            <a href="{% url 'reservations:edit' reservation.pk 'cancel' %}"
+                class="font-light text-2xl ml-8 text-gray-100 rounded-md bg-gray-400 p-3">예약 취소</a>
+            {% endif %}
+
+
         </div>
     </div>
 </div>

@@ -68,20 +68,22 @@ class Reservation(core_models.TimeStampedModel):
     def save(self, *args, **kwargs):
         self.clean()
         # if self.pk is None:
-        if True:
-            start = self.check_in
-            end = self.check_out
-            difference = end - start
-            existing_booked_day = BookedDay.objects.filter(
-                day__range=(start, end + datetime.timedelta(days=1)),
-                reservation__room=self.room,
-            ).exists()
+        try:
+            kwargs["edit"]
+            return super().save()
+        except KeyError:
+            if True:
+                start = self.check_in
+                end = self.check_out
+                difference = end - start
+                existing_booked_day = BookedDay.objects.filter(
+                    day__range=(start, end + datetime.timedelta(days=1)),
+                    reservation__room=self.room,
+                ).exists()
 
-            if not existing_booked_day:
+                if not existing_booked_day:
 
-                super().save(*args, **kwargs)
-                for i in range(difference.days + 1):
-                    day = start + datetime.timedelta(days=i)
-                    BookedDay.objects.create(day=day, reservation=self)
-        else:
-            return super().save(*args, **kwargs)
+                    super().save(*args, **kwargs)
+                    for i in range(difference.days + 1):
+                        day = start + datetime.timedelta(days=i)
+                        BookedDay.objects.create(day=day, reservation=self)
