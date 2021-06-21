@@ -4,8 +4,8 @@ from django.views.generic import View
 from django.contrib import messages
 from django.shortcuts import redirect, reverse, render
 from rooms import models as room_models
+from reviews import forms as review_forms
 from . import models
-import reservations
 
 
 class CreateError(Exception):
@@ -28,7 +28,7 @@ def create(request, room, year, month, day):
 
         if request.user.is_anonymous:
             messages.error(request, "로그인 후 이용하세요.")
-            return redirect(reverse("core:home"))
+            return redirect(reverse("users:login"))
         elif request.user == room.host:
             messages.error(request, "잘못된 접근입니다.")
             return redirect(reverse("core:home"))
@@ -53,8 +53,11 @@ class ReservationDetailView(View):
         ):
             raise Http404()
 
+        form = review_forms.CreateReviewForm()
         return render(
-            self.request, "reservations/detail.html", {"reservation": reservation}
+            self.request,
+            "reservations/detail.html",
+            {"reservation": reservation, "form": form},
         )
 
 
