@@ -1,3 +1,11 @@
+{% load i18n %}
 <footer class="container mx-auto text-center  mt-14 text-gray-500 font-medium">
-    &copy; H A N U M
+    <span>&copy; H A N U M</span>
+    <div class="my-3 flex justify-end">
+        {% get_current_language as LANGUAGE_CODE %}
+        <select class="w-24 h-8" id="js-lang">
+            <option value="ko" {% if LANGUAGE_CODE == 'ko' %} selected {% endif %}>한국어</option>
+            <option value="en" {% if LANGUAGE_CODE == 'en' %} selected {% endif %}>English</option>
+        </select>
+    </div>
 </footer>

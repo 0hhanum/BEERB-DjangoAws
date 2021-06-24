@@ -2,10 +2,12 @@
 import os
 import requests
 
+from django.utils import translation
+from django.http import HttpResponse
 from django.views.generic import DetailView, UpdateView, FormView
 from django.contrib.auth.views import PasswordChangeView
 from django.urls import reverse_lazy
-from django.shortcuts import get_object_or_404, redirect, reverse, render
+from django.shortcuts import redirect, reverse, render
 from django.contrib.auth import authenticate, login, logout
 
 # from django.contrib.auth.decorators import login_required
@@ -13,6 +15,7 @@ from django.contrib import messages
 from django.core.files.base import ContentFile
 from django.contrib.messages.views import SuccessMessageMixin
 from . import forms, models, mixins
+from config import settings
 
 
 """class LoginView(View):
@@ -333,3 +336,13 @@ class UpdatePasswordView(
 #         request.session["is_hosting"] = True
 
 #     return redirect(reverse_lazy("core:home"))
+
+
+def switch_lang(request):
+    lang = request.GET.get("lang", None)
+    if lang is not None:
+        request.session[translation.LANGUAGE_SESSION_KEY] = lang
+
+    response = HttpResponse(status=200)
+    response.set_cookie(settings.LANGUAGE_COOKIE_NAME, lang)
+    return response
