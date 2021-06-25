@@ -1,10 +1,11 @@
 import datetime
 from django.http import Http404
-from django.views.generic import View
+from django.views.generic import View, TemplateView
 from django.contrib import messages
 from django.shortcuts import redirect, reverse, render
 from rooms import models as room_models
 from reviews import forms as review_forms
+from users.mixins import LoggedInOnlyView
 from . import models
 
 
@@ -80,3 +81,8 @@ def edit_reservation(request, pk, verb):
 
     reservation.save(edit=True)
     return redirect(reverse("reservations:detail", kwargs={"pk": reservation.pk}))
+
+
+class ReservationListView(LoggedInOnlyView, TemplateView):
+
+    template_name = "reservations/reservation_list.html"

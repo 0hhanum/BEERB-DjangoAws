@@ -23,6 +23,9 @@ class Reservation(core_models.TimeStampedModel):
 
     """ Reservation Model Definition """
 
+    class Meta:
+        ordering = ("-created",)
+
     STATUS_PENDING = "pending"
     STATUS_CONFIRMED = "confirmed"
     STATUS_CANCELED = "canceled"
