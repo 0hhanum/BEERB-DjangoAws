@@ -6,5 +6,5 @@ class CustomReservationManager(models.Manager):
         try:
             return self.get(**kwargs)
 
-        except self.models.DoesNotExist:
+        except:
             return None

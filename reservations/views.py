@@ -62,6 +62,23 @@ class ReservationDetailView(View):
         )
 
 
+class RoomReservationView(View):
+    def get(self, *args, **kwargs):
+        pk = kwargs.get("room_pk")
+        room = room_models.Room.objects.get_or_none(pk=pk)
+        if not room:
+            messages.error(self.request, "잘못된 접근입니다.")
+            return redirect(reverse("core:home"))
+
+        if room.host != self.request.user:
+            messages.error(self.request, "잘못된 접근입니다.")
+            return redirect(reverse("core:home"))
+
+        return render(
+            self.request, "reservations/room_reservation.html", {"room": room}
+        )
+
+
 def edit_reservation(request, pk, verb):
     reservation = models.Reservation.objects.get_or_none(pk=pk)
     if not reservation:
@@ -83,6 +100,6 @@ def edit_reservation(request, pk, verb):
     return redirect(reverse("reservations:detail", kwargs={"pk": reservation.pk}))
 
 
-class ReservationListView(LoggedInOnlyView, TemplateView):
+class MyReservationsView(LoggedInOnlyView, TemplateView):
 
-    template_name = "reservations/reservation_list.html"
+    template_name = "reservations/my_reservation_list.html"

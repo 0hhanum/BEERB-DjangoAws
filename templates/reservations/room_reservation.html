@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+Reservation of {{room.name}}
+{% endblock page_title %}
+
+{% block search_bar %}
+{% endblock search_bar %}
+
+
+{% block content %}
+{% if room.reservations.all %}
+<div class="container mx-auto my-40 flex flex-col items-center border-white border-4 p-6 lg:w-5/12 md:w-1/2 rounded-lg">
+    <span class="flex w-full justify-center text-blue-600 text-3xl mb-10 mt-5">{{room.name}} 의 예약</span>
+    {% for reservation in room.reservations.all %}
+    <div class="py-6 border-gray-400 border-b w-full flex justify-between">
+        <a href="{% url 'reservations:detail' reservation.pk %}"><span>{{reservation}}</span></a>
+        <span
+            class="{% if reservation.status == 'pending' %} text-blue-600 {% elif reservation.status == 'confirmed' %} text-green-600 {% else %} text-red-600 {% endif %}">{{reservation.status}}</span>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="container mx-auto my-40 flex flex-col items-center border-white border-4 p-6 lg:w-5/12 md:w-1/2 rounded-lg">
+    <span class="flex w-full justify-center text-blue-600 text-3xl font-light">{{room.name}} 의 예약이 없습니다</span>
+</div>
+{% endif %}
+{% endblock content %}
