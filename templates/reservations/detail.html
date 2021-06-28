@@ -30,7 +30,8 @@
                         {{reservation.room.name}}
                     </span>
                     {% if reservation.room.host != user %}
-                    <a href="#" class="text-lg text-blue-400 py-3">호스트에게 연락하기</a>
+                    <a href="{% url 'conversations:go' reservation.room.host.pk reservation.guest.pk%}"
+                        class="text-lg text-blue-400 py-3">호스트에게 연락하기</a>
                     {% endif %}
                 </div>
             </div>

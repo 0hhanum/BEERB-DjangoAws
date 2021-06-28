@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+Conversation
+{% endblock page_title %}
+
+{% block search-bar %}
+{% endblock search-bar %}
+
+{% block content %}
+
+<div class="container mx-auto my-10 mt-40 flex justify-between min-h-50vh">
+    <div class="border-4 w-1/4 p-10 rounded-lg border-white h-full overflow-hidden">
+        <span class="text-center w-full block text-2xl font-light">대화</span>
+        <div class="flex justify-between mt-10 items-center">
+            {% for user in conversation.participants.all %}
+            <div class="flex flex-col items-center">
+                {% include "mixins/link_removed_user_avatar.html" with user_obj=user %}
+                <span class="mt-2 text-gray-500">{{user.first_name}}</span>
+            </div>
+            {% if forloop.first %}
+            <span class="font-light text-gray-700 text-2xl">&</span>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="flex-grow">
+        <div class="border-4 border-white rounded-lg ml-10 p-10 flex flex-col overflow-y-scroll h-50vh">
+            {% if conversation.messages.count == 0 %}
+            <span class="font-light text-2xl text-blue-800">진행중인 대화가 없습니다</span>
+            {% else %}
+            {% for message in conversation.messages.all %}
+            <div class="mb-10 {% if message.user.pk == user.pk %}
+                            self-end
+                            text-right
+                        {% endif %}">
+                <span class="text-sm font-medium text-gray-600">{{message.user.first_name}}</span>
+                <div class="mt-2 p-4 w-56 rounded break-words
+                                {% if message.user.pk != user.pk %}
+                                    bg-green-500
+                                    text-white
+                                {% else %}
+                                    bg-gray-300
+                                {% endif %}
+                            ">
+                    {{message.message}}
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+        </div>
+        <form class="mt-10 w-full ml-10 mx-auto flex flex-nowrap" method="POST">
+            {% csrf_token %}
+
+            <input class="mb-5 p-3 rounded-lg font-light text-lg w-full h-14" name="message" placeholder="  메세지를 작성하세요."
+                required />
+            <button
+                class="border border-white p-3 rounded-lg bg-blue-300 text-white font-light text-xl w-1/5 mr-10 ml-3 h-14">보내기</button>
+
+        </form>
+    </div>
+
+</div>
+{% endblock content %}
