@@ -3,6 +3,7 @@ from django.http import Http404
 from django.views.generic import View, TemplateView
 from django.contrib import messages
 from django.shortcuts import redirect, reverse, render
+from django.urls import NoReverseMatch
 from rooms import models as room_models
 from reviews import forms as review_forms
 from users.mixins import LoggedInOnlyView
@@ -33,6 +34,7 @@ def create(request, room, year, month, day):
         elif request.user == room.host:
             messages.error(request, "잘못된 접근입니다.")
             return redirect(reverse("core:home"))
+
         reservation = models.Reservation.objects.create(
             guest=request.user, room=room, check_in=date_obj
         )
