@@ -37,7 +37,7 @@ Conversation
                 <span class="text-sm font-medium text-gray-600">{{message.user.first_name}}</span>
                 <div class="mt-2 p-4 w-56 rounded break-words
                                 {% if message.user.pk != user.pk %}
-                                    bg-green-500
+                                    bg-green-700
                                     text-white
                                 {% else %}
                                     bg-gray-300
@@ -54,7 +54,7 @@ Conversation
             {% csrf_token %}
 
             <input class="mb-5 p-3 rounded-lg font-light text-lg w-full h-14" name="message" placeholder="  메세지를 작성하세요."
-                required />
+                required>
             <button
                 class="border border-white p-3 rounded-lg bg-blue-300 text-white font-light text-xl w-1/5 mr-10 ml-3 h-14">보내기</button>
 
