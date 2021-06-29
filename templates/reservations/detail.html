@@ -45,7 +45,9 @@
                     class="font-light text-2xl ml-8 text-gray-100 rounded-md bg-gray-400 p-3">예약 거절</a>
                 {% else %}
                 <a href="{% url 'reservations:edit' reservation.pk 'cancel' %}"
-                    class="font-light text-2xl ml-8 text-gray-100 rounded-md bg-gray-400 p-3">예약 취소</a>
+                    class="font-light text-2xl ml-8 text-gray-100 rounded-md bg-gray-400 p-3 w-32 text-center">예약 취소</a>
+                <a href="{% url 'rooms:detail' reservation.room.pk %}"
+                    class="font-light text-2xl ml-8 text-gray-100 rounded-md bg-blue-400 p-3 w-32 text-center">돌아가기</a>
                 {% endif %}
                 {% endif %}
             </div>
