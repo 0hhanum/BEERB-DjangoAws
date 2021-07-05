@@ -147,3 +147,7 @@ uploads/
 
 views_spare.py
 node_modules/
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
