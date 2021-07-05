@@ -28,7 +28,7 @@ SECRET_KEY = "t%_hh9z6u%cyjkzftdse87t-e*_$r9y69j6mzdo-)uuev%9=qr"
 # DEBUG = bool(os.environ.get("DEBUG"))
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [".elasticbeanstalk.com"]
 
 
 # Application definition
