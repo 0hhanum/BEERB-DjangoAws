@@ -26,7 +26,7 @@ SECRET_KEY = "t%_hh9z6u%cyjkzftdse87t-e*_$r9y69j6mzdo-)uuev%9=qr"
 # 개발 단계에서 켜두는 것. 에러시 웹에서 에러 페이지를 보여준다. 끄면 404
 
 # DEBUG = bool(os.environ.get("DEBUG"))
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [".elasticbeanstalk.com", "127.0.0.1"]
 
@@ -97,7 +97,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-if DEBUG:
+if not DEBUG:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -190,14 +190,14 @@ LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"),)
 
 LANGUAGE_COOKIE_NAME = "django_language"
 
-if not DEBUG:
+# if not DEBUG:
 
-    DEFAULT_FILE_STORAGE = "config.custom_storages.UploadStorage"
-    STATICFILES_STORAGE = "config.custom_storages.StaticStorage"
-    AWS_ACCESS_KEY_ID = "AKIAV2LIRUS26YEFO5HP"
-    AWS_SECRET_ACCESS_KEY = "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"
-    AWS_STORAGE_BUCKET_NAME = "beerb-clone"
-    AWS_DEFAULT_ACL = "public-read"
-    AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
-    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.ap-northeast-2.amazonaws.com"
-    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+DEFAULT_FILE_STORAGE = "config.custom_storages.UploadStorage"
+STATICFILES_STORAGE = "config.custom_storages.StaticStorage"
+AWS_ACCESS_KEY_ID = "AKIAV2LIRUS26YEFO5HP"
+AWS_SECRET_ACCESS_KEY = "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"
+AWS_STORAGE_BUCKET_NAME = "beerb-clone"
+AWS_DEFAULT_ACL = "public-read"
+AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.ap-northeast-2.amazonaws.com"
+STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
