@@ -13,7 +13,7 @@ module.exports = {
         "y-lg": "4px 8px 15px 3px rgba(253, 184, 30, 0.3), 0 6px 4px -2px rgba(253, 184, 30, 0.15)",
       },
       fontSize: {
-        "banner": "14rem",
+        "banner": "12rem",
       }
     },
   },
