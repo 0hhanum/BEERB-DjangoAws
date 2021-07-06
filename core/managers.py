@@ -1,3 +1,4 @@
+from django.contrib.auth.models import UserManager
 from django.db import models
 
 
@@ -8,3 +9,7 @@ class CustomModelManager(models.Manager):
 
         except:
             return None
+
+
+class CustomUserManager(CustomModelManager, UserManager):
+    pass
