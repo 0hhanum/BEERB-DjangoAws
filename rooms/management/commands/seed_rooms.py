@@ -51,7 +51,7 @@ class Command(BaseCommand):
                 room_models.Photo.objects.create(
                     caption=seeder.faker.sentence(),
                     room=room,
-                    file=f"/room-photos/{random.randint(1, 31)}.webp",
+                    file=f"https://beerb-clone.s3.ap-northeast-2.amazonaws.com/uploads/room-photos/{random.randint(1,31)}.webp",
                 )
 
             for facility in facilities:
