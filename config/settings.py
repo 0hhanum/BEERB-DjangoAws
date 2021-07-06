@@ -196,3 +196,4 @@ if not DEBUG:
     AWS_ACCESS_KEY_ID = os.environ.get("IAM_KEY")
     AWS_SECRET_ACCESS_KEY = os.environ.get("IAM_PASSWORD")
     AWS_STORAGE_BUCKET_NAME = "beerb-clone"
+    AWS_DEFAULT_ACL = "public-read"
