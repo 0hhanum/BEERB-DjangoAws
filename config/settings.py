@@ -25,8 +25,8 @@ SECRET_KEY = "t%_hh9z6u%cyjkzftdse87t-e*_$r9y69j6mzdo-)uuev%9=qr"
 # SECURITY WARNING: don't run with debug turned on in production!
 # 개발 단계에서 켜두는 것. 에러시 웹에서 에러 페이지를 보여준다. 끄면 404
 
-DEBUG = bool(os.environ.get("DEBUG"))
-# DEBUG = True
+# DEBUG = bool(os.environ.get("DEBUG"))
+DEBUG = False
 
 ALLOWED_HOSTS = [".elasticbeanstalk.com", "127.0.0.1"]
 
