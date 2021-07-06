@@ -192,22 +192,22 @@ LANGUAGE_COOKIE_NAME = "django_language"
 
 # if not DEBUG:
 
-DEFAULT_FILE_STORAGE = "config.custom_storages.UploadStorage"
-STATICFILES_STORAGE = "config.custom_storages.StaticStorage"
-AWS_ACCESS_KEY_ID = "AKIAV2LIRUS26YEFO5HP"
-AWS_SECRET_ACCESS_KEY = "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"
-AWS_STORAGE_BUCKET_NAME = "beerb-2"
-AWS_DEFAULT_ACL = "public-read"
-AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
-AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.ap-northeast-2.amazonaws.com"
-STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
-
 # DEFAULT_FILE_STORAGE = "config.custom_storages.UploadStorage"
 # STATICFILES_STORAGE = "config.custom_storages.StaticStorage"
 # AWS_ACCESS_KEY_ID = "AKIAV2LIRUS26YEFO5HP"
 # AWS_SECRET_ACCESS_KEY = "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"
-# AWS_STORAGE_BUCKET_NAME = "beerb-clone"
+# AWS_STORAGE_BUCKET_NAME = "beerb-2"
 # AWS_DEFAULT_ACL = "public-read"
 # AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
 # AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.ap-northeast-2.amazonaws.com"
 # STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+
+DEFAULT_FILE_STORAGE = "config.custom_storages.UploadStorage"
+STATICFILES_STORAGE = "config.custom_storages.StaticStorage"
+AWS_ACCESS_KEY_ID = "AKIAV2LIRUS26YEFO5HP"
+AWS_SECRET_ACCESS_KEY = "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"
+AWS_STORAGE_BUCKET_NAME = "beerb-clone"
+AWS_DEFAULT_ACL = "public-read"
+AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.ap-northeast-2.amazonaws.com"
+STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
