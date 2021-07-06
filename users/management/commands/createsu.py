@@ -5,11 +5,8 @@ from users.models import User
 
 class Command(BaseCommand):
 
-    help = "This command create many users"
+    help = "This command create superuser"
 
     def handle(self, *args, **options):
-        number = options.get("number", 1)
-        seeder = Seed.seeder()
-        seeder.add_entity(User, number, {"is_staff": False, "is_superuser": False})
-        seeder.execute()
+        User.objects
         self.stdout.write(self.style.SUCCESS(f"{number} users CREATED"))
