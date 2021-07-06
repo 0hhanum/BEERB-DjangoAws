@@ -157,6 +157,8 @@ USE_TZ = True
 
 STATIC_URL = "/static/"  # 이건 URL. 폴더명이랑 관련 없음
 
+STATIC_ROOT = STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]  # 이건 접근할 수 있는 폴더 지정
 
 AUTH_USER_MODEL = "users.User"
@@ -190,10 +192,13 @@ LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"),)
 LANGUAGE_COOKIE_NAME = "django_language"
 
 if not DEBUG:
-    DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-    STATICFILES_STORAGE = "storages.backends.s3boto3.S3StaticStorage"
 
-    AWS_ACCESS_KEY_ID = os.environ.get("IAM_KEY")
-    AWS_SECRET_ACCESS_KEY = os.environ.get("IAM_PASSWORD")
+    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static"
+
+    DEFAULT_FILE_STORAGE = "config.custom_storages.UploadStorage"
+    STATICFILES_STORAGE = "config.custom_storages.StaticStorage"
+    AWS_ACCESS_KEY_ID = "AKIAV2LIRUS26YEFO5HP"
+    AWS_SECRET_ACCESS_KEY = "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"
     AWS_STORAGE_BUCKET_NAME = "beerb-clone"
     AWS_DEFAULT_ACL = "public-read"
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.ap-northeast-2.amazonaws.com"
