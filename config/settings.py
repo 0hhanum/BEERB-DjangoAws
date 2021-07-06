@@ -97,11 +97,6 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-print(DEBUG)
-print(DEBUG)
-print(DEBUG)
-print(DEBUG)
-print(DEBUG)
 if DEBUG:
     DATABASES = {
         "default": {
@@ -204,4 +199,4 @@ if not DEBUG:
     AWS_STORAGE_BUCKET_NAME = "beerb-clone"
     AWS_DEFAULT_ACL = "public-read"
     AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.ap-northeast-2.amazonaws.com"
-    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static"
+    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
