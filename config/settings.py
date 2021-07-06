@@ -28,7 +28,7 @@ SECRET_KEY = "t%_hh9z6u%cyjkzftdse87t-e*_$r9y69j6mzdo-)uuev%9=qr"
 # DEBUG = bool(os.environ.get("DEBUG"))
 DEBUG = True
 
-ALLOWED_HOSTS = [".elasticbeanstalk.com"]
+ALLOWED_HOSTS = [".elasticbeanstalk.com", "127.0.0.1"]
 
 
 # Application definition
@@ -95,6 +95,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 if DEBUG is False:
+    # if DEBUG:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -105,7 +106,7 @@ if DEBUG is False:
 else:
     DATABASES = {
         "default": {
-            "ENGINE": "django.db.backends.postgresql",
+            "ENGINE": "django.db.backends.postgresql_psycopg2",
             "HOST": os.environ.get("RDS_HOST"),
             "NAME": os.environ.get("RDS_NAME"),
             "USER": os.environ.get("RDS_USER"),
