@@ -25,8 +25,8 @@ SECRET_KEY = "t%_hh9z6u%cyjkzftdse87t-e*_$r9y69j6mzdo-)uuev%9=qr"
 # SECURITY WARNING: don't run with debug turned on in production!
 # 개발 단계에서 켜두는 것. 에러시 웹에서 에러 페이지를 보여준다. 끄면 404
 
-# DEBUG = bool(os.environ.get("DEBUG"))
-DEBUG = True
+DEBUG = bool(os.environ.get("DEBUG"))
+# DEBUG = True
 
 ALLOWED_HOSTS = [".elasticbeanstalk.com", "127.0.0.1"]
 
@@ -42,7 +42,11 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-THIRD_PARTY_APPS = ["django_countries", "django_seed"]
+THIRD_PARTY_APPS = [
+    "django_countries",
+    "django_seed",
+    "storages",
+]
 
 PROJECT_APPS = [
     "core.apps.CoreConfig",
@@ -94,8 +98,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-if DEBUG is False:
-    # if DEBUG:
+if DEBUG:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -185,3 +188,11 @@ LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"),)
 # Language
 
 LANGUAGE_COOKIE_NAME = "django_language"
+
+if not DEBUG:
+    DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+    STATICFILES_STORAGE = "storages.backends.s3boto3.S3StaticStorage"
+
+    AWS_ACCESS_KEY_ID = os.environ.get("IAM_KEY")
+    AWS_SECRET_ACCESS_KEY = os.environ.get("IAM_PASSWORD")
+    AWS_STORAGE_BUCKET_NAME = "beerb-clone"
