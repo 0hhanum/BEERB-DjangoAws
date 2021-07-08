@@ -204,8 +204,8 @@ LANGUAGE_COOKIE_NAME = "django_language"
 
 DEFAULT_FILE_STORAGE = "config.custom_storages.UploadStorage"
 STATICFILES_STORAGE = "config.custom_storages.StaticStorage"
-AWS_ACCESS_KEY_ID = "AKIAV2LIRUS26YEFO5HP"
-AWS_SECRET_ACCESS_KEY = "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"
+AWS_ACCESS_KEY_ID = os.environ.get("IAM_KEY")
+AWS_SECRET_ACCESS_KEY = os.environ.get("IAM_PASSWORD")
 AWS_STORAGE_BUCKET_NAME = "beerb-clone"
 AWS_DEFAULT_ACL = "public-read"
 AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
