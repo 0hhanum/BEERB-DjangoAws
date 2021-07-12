@@ -42,7 +42,7 @@ class LoginView(mixins.LoggedOutOnlyView, FormView):
 
     template_name = "users/login.html"
     form_class = forms.LoginForm
-    initial = {"email": "asdf@dsaf.com"}
+    # initial = {"email": "asdf@dsaf.com"}
 
     def get_success_url(self):
         next_arg = self.request.GET.get("next")
@@ -267,7 +267,7 @@ def kakao_callback(request):
 
 class UserProfileView(DetailView):
 
-    """ User Profile View Description """
+    """User Profile View Description"""
 
     model = models.User
     context_object_name = "user_obj"
@@ -294,7 +294,7 @@ class UpdateProfileView(SuccessMessageMixin, mixins.LoggedInOnlyView, UpdateView
 
 class UpdateAvatarView(UpdateView):
 
-    """ Update Avatar View Description """
+    """Update Avatar View Description"""
 
     model = models.User
     template_name = "users/update_avatar.html"
