@@ -145,17 +145,6 @@ class Room(core_models.TimeStampedModel):
 
         return photo.file.url
 
-    def get_next_photo(self):
-        default_photo = Photo.objects.get(caption="Default")
-        photos = self.photos.all()[1:]
-        if len(photos) >= 4:
-            photos = photos[:4]
-        else:
-            while len(photos) < 4:
-                photos = list(photos)
-                photos.append(default_photo)
-        return photos
-
     def get_calendars(self):
 
         now = timezone.now()
