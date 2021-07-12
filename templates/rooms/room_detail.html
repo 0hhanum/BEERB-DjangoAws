@@ -31,10 +31,12 @@
                 <span class="mt-2 font-light text-gray-500">{{room.host.first_name}}</span>
             </a>
             {% else %}
-            <a href="{{room.host.get_absolute_url}}" class="flex flex-col items-center">
+            <a href="{{room.host.get_absolute_url}}" class="flex flex-col items-center"></a>
+            <div class="flex flex-col items-center justify-center">
                 {% include 'mixins/user_avatar.html' with user_obj=room.host %}
                 <span class="mt-2 font-light text-gray-500">{{room.host.first_name}}</span>
-            </a>
+            </div>
+
             {% endif %}
         </div>
         <div class="flex border-section mt-3 flex-col">
