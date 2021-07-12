@@ -147,13 +147,17 @@ class Room(core_models.TimeStampedModel):
 
     def get_next_photos(self):
         default_photo = Photo.objects.get(caption="Default")
-        photos = self.photos.all()[1:]
-        if len(photos) >= 4:
-            photos = photos[:4]
-        else:
-            while len(photos) < 4:
-                photos = list(photos)
-                photos.append(default_photo)
+
+        # photos = self.photos.all()[1:]
+        # if len(photos) >= 4:
+        #     photos = photos[:4]
+        # else:
+        #     while len(photos) < 4:
+        #         photos = list(photos)
+        #         photos.append(default_photo)
+        photos = []
+        for i in range(4):
+            photos.append(default_photo)
         return photos
 
     def get_calendars(self):
@@ -166,13 +170,4 @@ class Room(core_models.TimeStampedModel):
             next_month_cal = Calendar(now.year, 1)
         calendars = [this_month_cal, next_month_cal]
 
-        default_photo = Photo.objects.get(caption="Default")
-        photos = self.photos.all()[1:]
-        if len(photos) >= 4:
-            photos = photos[:4]
-        else:
-            while len(photos) < 4:
-                photos = list(photos)
-                photos.append(default_photo)
-
-        return enumerate(calendars), photos
+        return enumerate(calendars)
