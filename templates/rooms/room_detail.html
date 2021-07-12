@@ -27,10 +27,8 @@
 
             {% if user == room.host %}
             <a href="{{room.host.get_absolute_url}}" class="flex flex-col items-center">
-                <div class="flex flex-col justify-center items-center">
-                    {% include 'mixins/link_removed_user_avatar.html' with user_obj=room.host %}
-                    <span class="mt-2 font-light text-gray-500">{{room.host.first_name}}</span>
-                </div>
+                {% include 'mixins/link_removed_user_avatar.html' with user_obj=room.host %}
+                <span class="mt-2 font-light text-gray-500">{{room.host.first_name}}</span>
             </a>
             {% else %}
             <a href="{{room.host.get_absolute_url}}" class="flex flex-col items-center">
