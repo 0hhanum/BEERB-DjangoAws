@@ -147,7 +147,6 @@ class Room(core_models.TimeStampedModel):
 
     def get_next_photos(self):
         default_photo = Photo.objects.get(caption="Default")
-        print("왜안되는거야")
         photos = self.photos.all()[1:]
         if len(photos) >= 4:
             photos = photos[:4]
@@ -155,7 +154,6 @@ class Room(core_models.TimeStampedModel):
             while len(photos) < 4:
                 photos = list(photos)
                 photos.append(default_photo)
-        print("결과", photos)
         return photos
 
     def get_calendars(self):
