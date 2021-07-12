@@ -9,8 +9,11 @@
 {% block content %}
 <div class="-mt-5 container max-w-full h-75vh mb-20 flex">
     <div class="h-full w-1/2 bg-cover bg-center" style="background-image: url({{room.first_photo}});"></div>
+    {% for photo in room.get_next_photos %}
+    <div style="background-image: url({{photo.file.url}});" class="w-1/2 h-auto bg-cover bg-center"></div>
+    {% endfor %}
     <div class="h-full w-1/2 flex flex-wrap">
-        {% for photo in room.get_next_photo %}
+        {% for photo in room.get_next_photos %}
         <div style="background-image: url({{photo.file.url}});" class="w-1/2 h-auto bg-cover bg-center"></div>
         {% endfor %}
     </div>
