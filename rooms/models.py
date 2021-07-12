@@ -154,7 +154,10 @@ class Room(core_models.TimeStampedModel):
             while len(photos) < 4:
                 photos = list(photos)
                 photos.append(default_photo)
-        return photos
+        result = []
+        for i in photos:
+            result.append(i.file.url())
+        return result
 
     def get_calendars(self):
 
