@@ -10,7 +10,7 @@ from cal import Calendar
 
 class AbstractItem(core_models.TimeStampedModel):
 
-    """ Abstract Item """
+    """Abstract Item"""
 
     name = models.CharField(max_length=80)
 
@@ -23,7 +23,7 @@ class AbstractItem(core_models.TimeStampedModel):
 
 class RoomType(AbstractItem):
 
-    """ RoomType Object Definition """
+    """RoomType Object Definition"""
 
     class Meta:
         verbose_name = "Room Type"
@@ -33,7 +33,7 @@ class RoomType(AbstractItem):
 
 class Amenity(AbstractItem):
 
-    """ AmenityType Object Definition """
+    """AmenityType Object Definition"""
 
     class Meta:
         verbose_name_plural = "Amenities"
@@ -43,7 +43,7 @@ class Amenity(AbstractItem):
 
 class Facility(AbstractItem):
 
-    """ Facility Model Definition """
+    """Facility Model Definition"""
 
     class Meta:
         verbose_name_plural = "Facilities"
@@ -51,7 +51,7 @@ class Facility(AbstractItem):
 
 class HouseRule(AbstractItem):
 
-    """ HouseRule Model Definition """
+    """HouseRule Model Definition"""
 
     class Meta:
         verbose_name_plural = "House Rule"
@@ -59,7 +59,7 @@ class HouseRule(AbstractItem):
 
 class Photo(core_models.TimeStampedModel):
 
-    """ Photo Model Definition """
+    """Photo Model Definition"""
 
     caption = models.CharField(max_length=80, verbose_name="설명")
     file = models.ImageField(
@@ -74,7 +74,7 @@ class Photo(core_models.TimeStampedModel):
 
 class Room(core_models.TimeStampedModel):
 
-    """ Room Model Definition """
+    """Room Model Definition"""
 
     name = models.CharField(max_length=140, verbose_name="숙소명")
     description = models.TextField(verbose_name="설명")
@@ -145,7 +145,10 @@ class Room(core_models.TimeStampedModel):
 
         return photo.file.url
 
-    def get_next_photos(self):
+    def get_next_photo(self):
+        print(123)
+        print(123)
+        print(123)
         default_photo = Photo.objects.get(caption="Default")
         photos = self.photos.all()[1:]
         if len(photos) >= 4:
