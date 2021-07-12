@@ -8,8 +8,8 @@ class Command(BaseCommand):
     help = "This command create superuser"
 
     def handle(self, *args, **options):
-        admin_id = os.environ.get("admin")
-        admin_password = os.environ.get("ad_password")
+        admin_id = "ebadmin"
+        admin_password = 123
 
         admin = User.objects.get_or_none(username=admin_id)
         if not admin:
