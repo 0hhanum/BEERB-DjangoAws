@@ -145,7 +145,7 @@ class Room(core_models.TimeStampedModel):
 
         return photo.file.url
 
-    def get_next_photo(self):
+    def get_next_photos(self):
         print(123)
         print(123)
         print(123)
