@@ -145,10 +145,7 @@ class Room(core_models.TimeStampedModel):
 
         return photo.file.url
 
-    def get_next_photos(self):
-        print(123)
-        print(123)
-        print(123)
+    def get_next_photo(self):
         default_photo = Photo.objects.get(caption="Default")
         photos = self.photos.all()[1:]
         if len(photos) >= 4:
