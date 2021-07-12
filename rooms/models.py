@@ -76,6 +76,9 @@ class Room(core_models.TimeStampedModel):
 
     """Room Model Definition"""
 
+    class Meta:
+        ordering = ("-created",)
+
     name = models.CharField(max_length=140, verbose_name="숙소명")
     description = models.TextField(verbose_name="설명")
     country = CountryField(verbose_name="국가")
